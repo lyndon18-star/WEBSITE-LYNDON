@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Corsair Vengeance LPX 32GB DDR4">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="100%" stop-color="#11253b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">RAM</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Corsair Vengeance</text><text x="72" y="338" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">LPX 32GB DDR4</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#22d3ee" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">32GB / 3200MHz</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$159</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <g transform="translate(560,250) rotate(-8)">
+<rect x="0" y="0" width="300" height="74" rx="18" fill="#0d1728" stroke="#22d3ee" stroke-width="8"/>
+<rect x="28" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<rect x="72" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<rect x="116" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<rect x="160" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<rect x="204" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<rect x="248" y="18" width="30" height="24" rx="6" fill="#23324b"/>
+<g stroke="#d3b676" stroke-width="6"><line x1="22" y1="74" x2="22" y2="94"/><line x1="40" y1="74" x2="40" y2="94"/><line x1="58" y1="74" x2="58" y2="94"/><line x1="76" y1="74" x2="76" y2="94"/><line x1="94" y1="74" x2="94" y2="94"/><line x1="112" y1="74" x2="112" y2="94"/><line x1="130" y1="74" x2="130" y2="94"/><line x1="148" y1="74" x2="148" y2="94"/><line x1="166" y1="74" x2="166" y2="94"/><line x1="184" y1="74" x2="184" y2="94"/><line x1="202" y1="74" x2="202" y2="94"/><line x1="220" y1="74" x2="220" y2="94"/><line x1="238" y1="74" x2="238" y2="94"/><line x1="256" y1="74" x2="256" y2="94"/></g></g>
+</svg>

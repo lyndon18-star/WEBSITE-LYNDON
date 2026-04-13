@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | LAB U</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">LAB U</span>
+        <span class="brand-name">Unified Storefront</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="dashboard.html">Orders</a>
+      </nav>
+      <div class="nav-tools">
+        <form class="search-box" action="shop.html" method="get">
+          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+        </form>
+        <div class="nav-tools-icons">
+          <a class="nav-icon" href="cart.html" title="Cart">
+            <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
+            <span class="nav-badge" data-cart-count>0</span>
+          </a>
+          <a class="nav-icon" href="login.html" title="Account">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-shell cart-wrap">
+    <div class="forge-card fade-in">
+      <div class="forge-section">
+        <div class="forge-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          Customer Identity
+        </div>
+        <div class="forge-form-grid">
+          <div class="forge-form-field">
+            <span>Customer Name</span>
+            <input type="text" id="checkoutNameDisplay" disabled value="Loading...">
+          </div>
+          <div class="forge-form-field">
+            <span>Email Address</span>
+            <input type="text" id="checkoutEmailDisplay" disabled value="Loading...">
+          </div>
+        </div>
+      </div>
+
+      <div class="forge-section">
+        <div class="forge-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Delivery Details
+        </div>
+        <div class="forge-form-field">
+          <span>Shipping Address</span>
+          <textarea id="checkoutAddressInput" placeholder="Full Delivery Address" rows="2" required></textarea>
+        </div>
+        <div class="forge-form-field" style="margin-top: 16px;">
+          <span>Contact Number</span>
+          <input type="tel" id="checkoutContactInput" placeholder="e.g. 09123456789" required>
+        </div>
+      </div>
+    </div>
+
+    <div id="checkoutView"></div>
+
+    <div class="forge-card">
+      <div class="forge-section">
+        <div class="forge-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Order Summary
+        </div>
+        <div class="forge-summary-grid">
+          <div class="forge-summary-row">
+            <span>Original Merchandise</span>
+            <span id="coSubOriginal">PHP 0.00</span>
+          </div>
+          <div class="forge-summary-row">
+            <span>Applied Discounts</span>
+            <span class="forge-red-price" id="coSubDiscount">-PHP 0.00</span>
+          </div>
+          <div class="forge-summary-row">
+            <span>Logistics Fee</span>
+            <span>PHP 200.00</span>
+          </div>
+          <div class="forge-divider"></div>
+          <div class="forge-summary-row" style="font-size: 1.2rem; font-weight: 700; color: var(--accent);">
+            <span>TOTAL AMOUNT</span>
+            <span id="coGrandTotal">PHP 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="forge-section" style="background: rgba(255,255,255,0.02);">
+        <div class="forge-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Payment Method
+        </div>
+        <div class="forge-form-grid">
+          <label class="forge-radio">
+            <input type="radio" name="payment" value="card">
+            <span class="radio-mark"></span>
+            <span class="radio-label">Card</span>
+          </label>
+          <label class="forge-radio">
+            <input type="radio" name="payment" value="cash_on_delivery" checked>
+            <span class="radio-mark"></span>
+            <span class="radio-label">Cash on Delivery</span>
+          </label>
+        </div>
+
+        <div id="cardDetails" class="forge-form-grid" style="display: none; margin-top: 18px;">
+          <div class="forge-form-field">
+            <span>Visa Card Number</span>
+            <input type="text" id="cardNumberInput" inputmode="numeric" autocomplete="cc-number" placeholder="4xxx xxxx xxxx xxxx" maxlength="23">
+          </div>
+          <div class="forge-form-field">
+            <span>Name on Card</span>
+            <input type="text" id="cardNameInput" autocomplete="cc-name" placeholder="Name as shown on card">
+          </div>
+          <div class="forge-form-field">
+            <span>Expiration Date (MM/YY)</span>
+            <input type="text" id="cardExpInput" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5">
+          </div>
+          <div class="forge-form-field">
+            <span>Security Code (CVV)</span>
+            <input type="password" id="cardCvvInput" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="3">
+          </div>
+        </div>
+        <p id="cardDisclaimer" style="display: none; margin-top: 10px; color: var(--muted); font-size: 0.8rem;">Card details are validated on this page and are not saved.</p>
+
+        <button class="btn btn-primary" style="width: 100%; margin-top: 24px; padding: 18px;" onclick="checkout()">Place Order</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-note">LAB U</footer>
+  <script src="app.js"></script>
+</body>
+</html>

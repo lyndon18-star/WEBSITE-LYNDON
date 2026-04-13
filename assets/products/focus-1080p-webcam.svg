@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Focus 1080p Webcam">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1224"/>
+      <stop offset="100%" stop-color="#112b55"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">INPUT DEVICE</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Focus 1080p Webcam</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#60a5fa" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Auto Focus</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$69</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <rect x="584" y="260" width="272" height="162" rx="28" fill="#111827" stroke="#f8fbff" stroke-opacity="0.10"/>
+<circle cx="720" cy="340" r="56" fill="#0f172a" stroke="#60a5fa" stroke-width="10"/>
+<circle cx="720" cy="340" r="24" fill="#1e293b"/>
+<rect x="660" y="424" width="120" height="34" rx="14" fill="#334155"/>
+<path d="M690 458l-32 38h124l-32-38" fill="#475569"/>
+</svg>

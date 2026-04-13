@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Products | LAB U</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">LAB U</span>
+        <span class="brand-name">Seller Control</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="admin.html">Customer Order</a>
+        <a class="active" href="admin-products.html">Add Products</a>
+      </nav>
+      <div class="nav-tools">
+        <form class="search-box" action="shop.html" method="get">
+          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+        </form>
+        <div class="nav-tools-icons">
+          <a class="nav-icon" href="login.html" title="Account">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="adminDashboard" class="site-shell">
+    <section class="section">
+      <div class="page-hero-grid">
+        <article class="panel page-hero-main">
+          <p class="section-label">Seller Workspace</p>
+          <h1>Add Products</h1>
+          <p class="page-copy-tight">Upload new products in a dedicated seller page without mixing them into customer order management.</p>
+          <div class="hero-actions compact-actions">
+            <a class="btn btn-primary" href="admin.html">View Customer Orders</a>
+            <a class="btn btn-secondary" href="shop.html">Open Shop</a>
+          </div>
+        </article>
+
+        <aside class="panel page-hero-side">
+          <p class="section-label">Overview</p>
+          <div class="admin-overview">
+            <article class="mini-stat">
+              <span>Orders</span>
+              <strong id="adminOrderCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Products</span>
+              <strong id="adminProductCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Waiting</span>
+              <strong id="adminWaitingCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Delivered</span>
+              <strong id="adminDeliveredCount">0</strong>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section admin-wrap">
+      <div class="admin-grid">
+        <section class="dashboard-panel">
+          <p class="section-label">Catalog Upload</p>
+          <h2>Add Product</h2>
+          <form id="adminProductForm" class="admin-form">
+            <label class="form-field">
+              <span>Product Name</span>
+              <input id="adminProductName" type="text" placeholder="New product name" required>
+            </label>
+            <div class="admin-form-grid">
+              <label class="form-field">
+                <span>Category</span>
+                <input id="adminProductCategory" type="text" placeholder="GPU, CPU, RAM..." required>
+              </label>
+              <label class="form-field">
+                <span>Tier</span>
+                <select id="adminProductTier" class="sort-select" required>
+                  <option value="mid">Mid</option>
+                  <option value="high">High</option>
+                  <option value="elite">Elite</option>
+                </select>
+              </label>
+            </div>
+            <div class="admin-form-grid">
+              <label class="form-field">
+                <span>Price</span>
+                <input id="adminProductPrice" type="number" min="1" placeholder="0" required>
+              </label>
+              <label class="form-field">
+                <span>Badge</span>
+                <input id="adminProductBadge" type="text" placeholder="Flagship, 1440p Ultra...">
+              </label>
+            </div>
+            <div class="admin-form-grid">
+              <label class="form-field">
+                <span>Accent</span>
+                <select id="adminProductAccent" class="sort-select">
+                  <option value="cyan">Cyan</option>
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
+                  <option value="blue">Blue</option>
+                  <option value="orange">Orange</option>
+                  <option value="gray">Gray</option>
+                  <option value="slate">Slate</option>
+                  <option value="violet">Violet</option>
+                </select>
+              </label>
+              <label class="form-field">
+                <span>Image</span>
+                <input id="adminProductImage" type="file" accept="image/*">
+              </label>
+            </div>
+            <label class="form-field">
+              <span>Description</span>
+              <textarea id="adminProductDesc" class="admin-textarea" placeholder="Short product description" required></textarea>
+            </label>
+            <button type="submit">Upload Product</button>
+            <p id="adminProductFeedback" class="admin-feedback"></p>
+          </form>
+        </section>
+
+        <aside class="admin-side-stack">
+          <section class="dashboard-panel">
+            <p class="section-label">Latest Inventory</p>
+            <h2>Recent Products</h2>
+            <div id="adminInventory" class="inventory-list"></div>
+          </section>
+
+          <section class="dashboard-panel">
+            <p class="section-label">Seller Workflow</p>
+            <h2>Keep It Organized</h2>
+            <div class="summary-list">
+              <div><span>Customer Order</span><span>Track and update deliveries</span></div>
+              <div><span>Add Products</span><span>Upload new store items</span></div>
+              <div><span>Shop</span><span>Review live customer view</span></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-note">LAB U Seller Control</footer>
+  <script src="app.js"></script>
+</body>
+</html>

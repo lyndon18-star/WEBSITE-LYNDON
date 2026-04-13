@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Local runtime data
+data/*.db
+data/*.db-*
+
+# Generated assets / temp
+output/
+tmp/
+
+# Accidental nested repo folder
+WEBSITE-LYNDON/
+

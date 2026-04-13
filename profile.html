@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile | LAB U</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 32px;
+      margin-top: 2rem;
+      border: 1px solid var(--border);
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .profile-avatar-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #1a1a2e;
+      border: 2px solid var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+    
+    .profile-avatar-container:hover::after {
+      content: 'Change';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      text-align: center;
+      padding: 4px 0;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .profile-avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .profile-info {
+      flex: 1;
+    }
+    
+    .profile-info h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    
+    .profile-info p {
+      color: var(--text-muted);
+      margin: 4px 0 0;
+    }
+
+    .profile-form .forge-form-field {
+      margin-bottom: 24px;
+    }
+
+    .save-profile-btn {
+      width: 100%;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body id="profileBody">
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">LAB U</span>
+        <span class="brand-name">Unified Storefront</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="builder.html">Build a PC</a>
+        <a href="dashboard.html">Orders</a>
+      </nav>
+      <div class="nav-tools">
+        <form class="search-box" action="shop.html" method="get">
+          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+        </form>
+        <div class="nav-tools-icons">
+          <a class="nav-icon" href="cart.html" title="Cart">
+            <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
+            <span class="nav-badge" data-cart-count>0</span>
+          </a>
+          <a class="nav-icon" href="login.html" title="Account">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <div class="forge-card fade-in">
+      <div class="forge-section">
+        <div class="profile-header">
+          <label class="profile-avatar-container" title="Click to change profile picture">
+            <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+            <img id="avatarPreview" src="" alt="" style="display: none;">
+            <svg id="avatarPlaceholder" viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </label>
+          <div class="profile-info">
+            <h1 id="profileName">Loading Profile...</h1>
+            <p id="profileEmail"></p>
+          </div>
+        </div>
+      </div>
+
+      <form id="profileForm">
+        <div class="forge-section">
+          <div class="forge-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+            Account Identity
+          </div>
+          <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Your basic account details are used for login and order verification.</p>
+          <div class="forge-form-grid">
+            <div class="forge-form-field">
+              <span>Full Name</span>
+              <input type="text" id="profileFullNameDisplay" disabled value="Loading...">
+            </div>
+            <div class="forge-form-field">
+              <span>Email Address</span>
+              <input type="text" id="profileEmailDisplay" disabled value="Loading...">
+            </div>
+          </div>
+        </div>
+
+        <div class="forge-section">
+          <div class="forge-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Shipping & Payment Preferences
+          </div>
+          <div class="forge-form-field">
+            <span>Default Contact Number</span>
+            <input type="tel" id="profilePhone" placeholder="e.g. 09123456789">
+          </div>
+          <div class="forge-form-field" style="margin-top: 20px;">
+            <span>Default Delivery Address</span>
+            <textarea id="profileAddress" rows="3" placeholder="Enter your full street address, city, and zip code"></textarea>
+          </div>
+
+          <div class="forge-form-field" style="margin-top: 24px;">
+            <label style="color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;">Default Payment Mode</label>
+            <div style="display:flex; gap:24px; margin-top:12px;">
+              <label class="forge-radio">
+                <input type="radio" name="profilePayment" value="card">
+                <span class="radio-mark"></span>
+                <span class="radio-label">Card</span>
+              </label>
+              <label class="forge-radio">
+                <input type="radio" name="profilePayment" value="cash_on_delivery" checked>
+                <span class="radio-mark"></span>
+                <span class="radio-label">Cash on Delivery</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="forge-section" style="background: rgba(33, 212, 253, 0.02);">
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px;" id="saveProfileBtn">Save Profile Settings</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer-note">LAB U</footer>
+
+  <script src="app.js"></script>
+  <script>
+    let currentAvatarData = null;
+
+    function populateProfileFromUser(user) {
+      if (!user) return;
+
+      document.getElementById('profileName').textContent = user.fullName || user.email || "Your Profile";
+      document.getElementById('profileEmail').textContent = user.email || "";
+
+      const fullNameInput = document.getElementById('profileFullNameDisplay');
+      const emailInput = document.getElementById('profileEmailDisplay');
+      if (fullNameInput) fullNameInput.value = user.fullName || "";
+      if (emailInput) emailInput.value = user.email || "";
+
+      const phoneInput = document.getElementById('profilePhone');
+      const addressInput = document.getElementById('profileAddress');
+      if (phoneInput) phoneInput.value = user.phone || "";
+      if (addressInput) addressInput.value = user.address || "";
+
+      if (user.defaultPayment) {
+        const matchedRadio = document.querySelector('input[name="profilePayment"][value="' + user.defaultPayment + '"]');
+        if (matchedRadio) matchedRadio.checked = true;
+      }
+
+      if (user.avatarData) {
+        currentAvatarData = user.avatarData;
+        const preview = document.getElementById('avatarPreview');
+        const placeholder = document.getElementById('avatarPlaceholder');
+        if (preview) {
+          preview.src = currentAvatarData;
+          preview.style.display = 'block';
+        }
+        if (placeholder) placeholder.style.display = 'none';
+      }
+    }
+
+    document.getElementById('avatarUpload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        currentAvatarData = evt.target.result;
+        document.getElementById('avatarPreview').src = currentAvatarData;
+        document.getElementById('avatarPreview').style.display = 'block';
+        document.getElementById('avatarPlaceholder').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!currentUser) {
+        alert("You must be logged in to save your profile.");
+        return;
+      }
+
+      const btn = document.getElementById('saveProfileBtn');
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      try {
+        await apiRequest("/api/user/profile", {
+          method: "PUT",
+          body: JSON.stringify({
+            phone: document.getElementById('profilePhone').value,
+            address: document.getElementById('profileAddress').value,
+            payment: document.querySelector('input[name="profilePayment"]:checked').value,
+            avatarData: currentAvatarData
+          })
+        });
+        
+        // Refresh current user details
+        const refreshed = await apiRequest("/api/auth/me", { method: "GET" });
+        currentUser = refreshed.user || null;
+        updateAuthUI();
+        applyRoleUI();
+        populateProfileFromUser(currentUser);
+
+        alert("Profile saved successfully!");
+      } catch (err) {
+        alert("Error saving profile: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Save Profile Settings";
+      }
+    });
+
+    function handleAuthReady() {
+      if (!currentUser) {
+        navigateWithTransition('login.html');
+        return;
+      }
+      populateProfileFromUser(currentUser);
+    }
+
+    if (window.__authResolved) {
+      handleAuthReady();
+    } else {
+      window.addEventListener("auth:ready", handleAuthReady, { once: true });
+    }
+  </script>
+</body>
+</html>

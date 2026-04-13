@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Builder | LAB U</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">LAB U</span>
+        <span class="brand-name">Unified Storefront</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="dashboard.html">Orders</a>
+      </nav>
+      <div class="nav-tools">
+        <form class="search-box" action="shop.html" method="get">
+          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+        </form>
+        <div class="nav-tools-icons">
+          <a class="nav-icon" href="cart.html" title="Cart">
+            <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
+            <span class="nav-badge" data-cart-count>0</span>
+          </a>
+          <a class="nav-icon" href="login.html" title="Account">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="section">
+      <div class="page-hero-grid">
+        <article class="panel page-hero-main">
+          <p class="section-label">PC Builder</p>
+          <h1>Custom<br>Configuration</h1>
+
+          <p>Select your components from the categories below to build a customized PC that fits your needs. Watch the system evaluate your build's tier in real-time as you pick your parts.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="shop.html">Shop Parts</a>
+            <a class="btn btn-secondary" href="dashboard.html">View Orders</a>
+          </div>
+        </article>
+
+        <aside class="panel page-hero-side">
+          <p class="section-label">Builder Highlights</p>
+          <h2>Full System Customizer</h2>
+          <div class="mini-stat-grid">
+            <article class="mini-stat">
+              <span>Categories</span>
+              <strong>Full setup control</strong>
+              <p>Choose CPU, Motherboard, RAM, GPU, Case, PSU, and more.</p>
+            </article>
+            <article class="mini-stat">
+              <span>Smart Analysis</span>
+              <strong>Tier evaluation</strong>
+              <p>Instantly know if your PC is Mid Range, High Range, or Elite.</p>
+            </article>
+            <article class="mini-stat">
+              <span>Visual Focus</span>
+              <strong>Live Summary</strong>
+              <p>Watch your component list grow as you build your dream rig.</p>
+            </article>
+            <article class="mini-stat">
+              <span>Next Step</span>
+              <strong>One-click Cart</strong>
+              <p>Add all your configured custom setup parts straight to your cart.</p>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="builder-grid">
+        <section class="builder-panel">
+          <p class="section-label">Component Selection</p>
+          <h2>Configure Your Rig</h2>
+          <p>Select components for each category to build your setup.</p>
+
+          <div id="builderSlots" class="builder-list">
+             <!-- Dynamically generated select fields will go here -->
+          </div>
+        </section>
+
+        <aside class="builder-panel builder-summary">
+          <div class="forge-card builder-focus-card">
+            <div class="forge-section" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <p class="section-label">System Performance</p>
+              <h2 id="builderTierDisplay" style="font-size: 2.22rem; margin: 12px 0; color: var(--accent); text-transform: uppercase;">Pending</h2>
+              <span class="tag" style="background: rgba(33, 212, 253, 0.1); color: var(--accent);">Evaluation Active</span>
+            </div>
+            <div class="forge-section">
+              <h3 id="builderFocusName" style="margin-bottom: 8px;">Custom Setup</h3>
+              <p id="builderFocusDesc" style="font-size: 0.9rem; color: var(--muted);">The core components you select specify the overall performance tier of your build.</p>
+            </div>
+          </div>
+
+          <div class="forge-card">
+            <div class="forge-section-title" style="padding: 24px 24px 0;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              Selected Parts
+            </div>
+            <div class="forge-section" style="padding-top: 12px;">
+              <div id="builderItemsList" class="summary-list">
+                <p style="color: var(--muted); font-size: 0.9rem;">No parts selected yet.</p>
+              </div>
+            </div>
+            
+            <div class="forge-section" style="background: rgba(0, 255, 163, 0.02); border-top: 1px solid rgba(255,255,255,0.05);">
+              <div class="forge-summary-row" style="font-size: 1.1rem; font-weight: 700;">
+                <span>Total Build Cost</span>
+                <span id="total" style="color: var(--accent-2);">PHP 0.00</span>
+              </div>
+              <div class="forge-button-group">
+                <button id="addBuildBtn" class="btn btn-primary" style="flex: 1.2; padding: 14px;" onclick="addBuildToCart()">Add to Cart</button>
+                <button class="btn" style="flex: 1; background: var(--accent); color: var(--bg); border: none; padding: 14px; font-weight: 600;" onclick="buyBuildNow()">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-note">LAB U now uses a shared UI across Home, Shop, Builder, Orders, and Account screens.</footer>
+  <script src="app.js"></script>
+</body>
+</html>

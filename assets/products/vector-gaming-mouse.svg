@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Vector Gaming Mouse">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a0b12"/>
+      <stop offset="100%" stop-color="#331426"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#ff5f7b" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#ff5f7b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">INPUT DEVICE</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Vector Gaming</text><text x="72" y="338" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Mouse</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#ff5f7b" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Lightweight</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$59</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <path d="M718 180c78 0 120 74 120 164 0 108-54 188-120 188s-120-80-120-188c0-90 42-164 120-164z" fill="#111827" stroke="#ff5f7b" stroke-width="8"/>
+<path d="M718 180v114" stroke="#f8fbff" stroke-opacity="0.18" stroke-width="6" stroke-linecap="round"/>
+<rect x="692" y="232" width="52" height="86" rx="24" fill="#1f2937"/>
+<path d="M718 318v104" stroke="#ff5f7b" stroke-width="10" stroke-linecap="round"/>
+</svg>

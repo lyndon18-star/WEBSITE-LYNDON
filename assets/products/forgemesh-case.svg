@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="ForgeMesh Case">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1320"/>
+      <stop offset="100%" stop-color="#243149"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">CASE</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">ForgeMesh Case</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#a5b4fc" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Airflow</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$119</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <rect x="620" y="180" width="190" height="352" rx="24" fill="#111827" stroke="#f8fbff" stroke-opacity="0.12"/>
+<rect x="648" y="214" width="134" height="252" rx="16" fill="#1b2a40" stroke="#a5b4fc" stroke-opacity="0.65" stroke-width="6"/>
+<circle cx="714" cy="494" r="7" fill="#dbeafe" fill-opacity="0.7"/>
+<rect x="772" y="224" width="18" height="232" rx="9" fill="#334155"/>
+<path d="M648 314h134" stroke="#e2e8f0" stroke-opacity="0.18" stroke-width="4"/>
+</svg>

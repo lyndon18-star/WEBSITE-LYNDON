@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | LAB U</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">LAB U</span>
+        <span class="brand-name">Seller Control</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a class="active" href="admin.html">Customer Order</a>
+        <a href="admin-products.html">Add Products</a>
+      </nav>
+      <div class="nav-tools">
+        <form class="search-box" action="shop.html" method="get">
+          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+        </form>
+        <div class="nav-tools-icons">
+          <a class="nav-icon" href="login.html" title="Account">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="adminDashboard" class="site-shell">
+    <section class="section">
+      <div class="page-hero-grid">
+        <article class="panel page-hero-main">
+          <p class="section-label">Seller Workspace</p>
+          <h1 id="adminWelcome">Admin Panel</h1>
+          <p class="page-copy-tight">Manage customer orders in one focused workspace.</p>
+          <div class="hero-actions compact-actions">
+            <a class="btn btn-primary" href="admin-products.html">Add Products</a>
+            <a class="btn btn-secondary" href="shop.html">View Shop</a>
+          </div>
+        </article>
+
+        <aside class="panel page-hero-side">
+          <p class="section-label">Overview</p>
+          <div class="admin-overview">
+            <article class="mini-stat">
+              <span>Orders</span>
+              <strong id="adminOrderCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Products</span>
+              <strong id="adminProductCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Waiting</span>
+              <strong id="adminWaitingCount">0</strong>
+            </article>
+            <article class="mini-stat">
+              <span>Delivered</span>
+              <strong id="adminDeliveredCount">0</strong>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section admin-wrap">
+      <div class="admin-grid">
+        <section id="adminOrdersSection" class="dashboard-panel">
+          <p class="section-label">Order Management</p>
+          <h2>Customer Orders</h2>
+          <div id="adminOrders" class="builder-list"></div>
+        </section>
+
+        <aside class="admin-side-stack">
+          <section class="dashboard-panel">
+            <p class="section-label">Status Guide</p>
+            <h2>Order Steps</h2>
+            <div class="summary-list">
+              <div><span>Order placed</span><span>Customer checked out</span></div>
+              <div><span>Waiting for carrier</span><span>Preparing handoff</span></div>
+              <div><span>In transit</span><span>Shipment is moving</span></div>
+              <div><span>Order delivered</span><span>Completed</span></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-note">LAB U Seller Control</footer>
+  <script src="app.js"></script>
+</body>
+</html>

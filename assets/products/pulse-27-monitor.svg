@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Pulse 27 Monitor">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1224"/>
+      <stop offset="100%" stop-color="#112b55"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">OUTPUT DEVICE</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Pulse 27 Monitor</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#60a5fa" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">165Hz</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$329</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <rect x="560" y="188" width="320" height="214" rx="24" fill="#111827" stroke="#f8fbff" stroke-opacity="0.10"/>
+<rect x="586" y="212" width="268" height="162" rx="18" fill="#13233f" stroke="#60a5fa" stroke-width="8"/>
+<path d="M620 340c72-52 150-52 204 0" fill="none" stroke="#60a5fa" stroke-width="8" stroke-linecap="round"/>
+<rect x="694" y="404" width="52" height="22" rx="10" fill="#a5b4fc"/>
+<rect x="660" y="426" width="120" height="28" rx="12" fill="#334155"/>
+</svg>

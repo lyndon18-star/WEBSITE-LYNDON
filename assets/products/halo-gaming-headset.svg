@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Halo Gaming Headset">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#130f25"/>
+      <stop offset="100%" stop-color="#2d2158"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <rect x="42" y="42" width="940" height="940" rx="40" fill="none" stroke="#f8fbff" stroke-opacity="0.08"/>
+  <text x="72" y="106" fill="#22d3ee" font-size="28" font-weight="700" letter-spacing="4" font-family="Segoe UI, Arial, sans-serif">DIGITAL FORGE</text>
+  <text x="72" y="156" fill="#cbd5e1" font-size="26" font-weight="600" letter-spacing="3" font-family="Segoe UI, Arial, sans-serif">OUTPUT DEVICE</text>
+  <text x="72" y="270" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Halo Gaming</text><text x="72" y="338" fill="#f8fbff" font-size="56" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Headset</text>
+  <rect x="72" y="788" width="252" height="66" rx="22" fill="#f8fbff" fill-opacity="0.08" stroke="#f8fbff" stroke-opacity="0.10"/>
+  <text x="102" y="830" fill="#8b5cf6" font-size="30" font-weight="700" font-family="Segoe UI, Arial, sans-serif">Spatial Audio</text>
+  <text x="72" y="916" fill="#cbd5e1" font-size="34" font-weight="600" font-family="Segoe UI, Arial, sans-serif">$89</text>
+  <text x="72" y="952" fill="#94a3b8" font-size="20" font-family="Segoe UI, Arial, sans-serif">Catalog product art</text>
+  <path d="M610 360c0-118 62-184 110-184s110 66 110 184" fill="none" stroke="#8b5cf6" stroke-width="18" stroke-linecap="round"/>
+<rect x="596" y="336" width="64" height="132" rx="28" fill="#1f2937" stroke="#f8fbff" stroke-opacity="0.10"/>
+<rect x="778" y="336" width="64" height="132" rx="28" fill="#1f2937" stroke="#f8fbff" stroke-opacity="0.10"/>
+<rect x="678" y="224" width="82" height="40" rx="20" fill="#334155"/>
+</svg>
