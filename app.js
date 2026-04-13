@@ -336,6 +336,10 @@ function isProfilePage() {
   return /\/?profile\.html$/i.test(window.location.pathname);
 }
 
+function isGithubPagesHost() {
+  return typeof window !== "undefined" && typeof window.location?.hostname === "string" && window.location.hostname.endsWith(".github.io");
+}
+
 function isAdminUser(user = currentUser) {
   return user?.role === "admin";
 }
@@ -1787,15 +1791,33 @@ async function loadStorefront() {
     const payload = await apiRequest("/api/products", { method: "GET" });
     products = (payload.products || []).map(normalizeProduct);
   } catch (error) {
-    console.error("Failed to load products from server:", error);
-    return;
+    try {
+      const local = await fetch("products.json", { cache: "no-store" });
+      const localPayload = await local.json();
+      products = (Array.isArray(localPayload) ? localPayload : (localPayload.products || [])).map(normalizeProduct);
+      console.warn("API unavailable; loaded products from products.json.");
+    } catch (localError) {
+      console.error("Failed to load products from server:", error);
+      console.error("Failed to load products.json:", localError);
+      return;
+    }
   }
 
   loadCatalogState();
-  
-  const authReady = await loadAuthState();
-  if (authReady === false) {
-    return;
+
+  // GitHub Pages is a static host, so the Node API won't exist there.
+  if (isGithubPagesHost()) {
+    const oldUser = currentUser;
+    currentUser = null;
+    await syncUserData(oldUser, null);
+    applyRoleUI();
+    window.__authResolved = true;
+    window.dispatchEvent(new Event("auth:ready"));
+  } else {
+    const authReady = await loadAuthState();
+    if (authReady === false) {
+      return;
+    }
   }
 
   if (isAdminPage()) {

@@ -1,0 +1,39 @@
+[
+  { "id": 1, "name": "Ryzen 3 3200G", "category": "CPU", "tier": "mid", "price": 5550, "badge": "APU", "accent": "orange", "desc": "Budget quad-core Ryzen processor with built-in Radeon graphics." },
+  { "id": 2, "name": "Ryzen 5 4600G", "category": "CPU", "tier": "mid", "price": 7200, "badge": "APU", "accent": "orange", "desc": "Balanced six-core Ryzen chip for affordable builds and office setups." },
+  { "id": 3, "name": "Ryzen 5 5600G", "category": "CPU", "tier": "high", "price": 7800, "badge": "Popular APU", "accent": "green", "desc": "Ryzen 5 model with integrated graphics for compact starter gaming PCs." },
+  { "id": 4, "name": "Ryzen 5 5600X", "category": "CPU", "tier": "high", "price": 8900, "badge": "6-Core", "accent": "green", "desc": "Fast Ryzen gaming CPU with strong value for mainstream builds." },
+  { "id": 5, "name": "Ryzen 7 5700X", "category": "CPU", "tier": "high", "price": 11150, "badge": "8-Core", "accent": "cyan", "desc": "Excellent Ryzen 7 chip for gaming, editing, and multitasking." },
+  { "id": 6, "name": "Ryzen 7 5800X3D", "category": "CPU", "tier": "elite", "price": 16200, "badge": "3D V-Cache", "accent": "cyan", "desc": "Top AM4 Ryzen gaming CPU with extra cache for high frame rates." },
+  { "id": 7, "name": "Ryzen 9 5900X", "category": "CPU", "tier": "elite", "price": 18400, "badge": "12-Core", "accent": "violet", "desc": "Ryzen 9 processor built for streaming, rendering, and heavier workloads." },
+  { "id": 8, "name": "Ryzen 9 7950X3D", "category": "CPU", "tier": "elite", "price": 33550, "badge": "Flagship", "accent": "violet", "desc": "Premium Ryzen 9 chip for enthusiast gaming and creator-class performance." },
+
+  { "id": 9, "name": "Aegis B550 Board", "category": "Motherboard", "tier": "mid", "price": 8350, "badge": "AM4 Ready", "accent": "red", "desc": "Reliable AM4 motherboard for Ryzen 3000 and Ryzen 5000 series builds." },
+  { "id": 10, "name": "Aegis B650 Board", "category": "Motherboard", "tier": "high", "price": 15600, "badge": "AM5 Ready", "accent": "red", "desc": "DDR5 motherboard with PCIe 5.0 support for newer Ryzen platforms." },
+
+  { "id": 11, "name": "Kingston ValueRAM 4GB DDR4", "category": "RAM", "tier": "mid", "price": 1050, "badge": "4GB / 2200MHz", "accent": "blue", "desc": "Entry-level Kingston memory stick for basic PCs and light office builds." },
+  { "id": 12, "name": "Crucial Basics 8GB DDR4", "category": "RAM", "tier": "mid", "price": 1600, "badge": "8GB / 2400MHz", "accent": "blue", "desc": "Common Crucial RAM option for day-to-day systems and school computers." },
+  { "id": 13, "name": "TeamGroup Elite 16GB DDR4", "category": "RAM", "tier": "mid", "price": 2750, "badge": "16GB / 2666MHz", "accent": "blue", "desc": "TeamGroup dual-channel memory kit for multitasking and mainstream gaming." },
+  { "id": 14, "name": "G.Skill Ripjaws V 16GB DDR4", "category": "RAM", "tier": "high", "price": 3850, "badge": "16GB / 3000MHz", "accent": "cyan", "desc": "Popular G.Skill kit that balances gaming speed and stable everyday performance." },
+  { "id": 15, "name": "Corsair Vengeance LPX 32GB DDR4", "category": "RAM", "tier": "high", "price": 8900, "badge": "32GB / 3200MHz", "accent": "cyan", "desc": "Common Corsair performance memory kit for heavier games, editing, and multitasking." },
+
+  { "id": 16, "name": "Kingston NV2 256GB", "category": "SSD", "tier": "mid", "price": 1950, "badge": "256GB / NVMe", "accent": "orange", "desc": "Compact Kingston SSD for boot drives and smaller everyday storage needs." },
+  { "id": 17, "name": "Crucial BX500 512GB", "category": "SSD", "tier": "mid", "price": 2750, "badge": "512GB / SATA", "accent": "orange", "desc": "Common Crucial SSD with more room for apps, files, and light game libraries." },
+  { "id": 18, "name": "WD Blue SN570 1TB", "category": "SSD", "tier": "high", "price": 5000, "badge": "1TB / NVMe", "accent": "orange", "desc": "WD Blue NVMe SSD with solid speed and a roomy 1TB capacity." },
+  { "id": 19, "name": "Samsung 970 EVO Plus 1TB", "category": "SSD", "tier": "high", "price": 8350, "badge": "1TB / NVMe", "accent": "orange", "desc": "Popular Samsung SSD for fast load times, large games, and project storage." },
+
+  { "id": 20, "name": "Vortex RTX 4070 Super", "category": "GPU", "tier": "elite", "price": 36350, "badge": "1440p Ultra", "accent": "cyan", "desc": "High-performance graphics card for smooth 1440p gaming and creator work." },
+  { "id": 21, "name": "GhostFlow 240 AIO", "category": "Cooling", "tier": "high", "price": 7200, "badge": "ARGB", "accent": "green", "desc": "240mm liquid cooler to keep Ryzen systems cool under heavy load." },
+  { "id": 22, "name": "Nova 750W Gold", "category": "PSU", "tier": "mid", "price": 6650, "badge": "Modular", "accent": "gray", "desc": "Dependable 750W power supply for gaming systems with cable management." },
+  { "id": 23, "name": "ForgeMesh Case", "category": "Case", "tier": "mid", "price": 6650, "badge": "Airflow", "accent": "slate", "desc": "Airflow-focused mid tower with tempered glass and roomy cable routing." },
+
+  { "id": 24, "name": "Pulse 27 Monitor", "category": "Output Device", "tier": "high", "price": 18400, "badge": "165Hz", "accent": "blue", "desc": "27-inch QHD monitor for output display with fast refresh and sharp detail." },
+  { "id": 25, "name": "Echo Studio Speakers", "category": "Output Device", "tier": "mid", "price": 5550, "badge": "2.1 Audio", "accent": "slate", "desc": "Desktop speaker system for clear output audio in gaming and media setups." },
+  { "id": 26, "name": "Halo Gaming Headset", "category": "Output Device", "tier": "mid", "price": 5000, "badge": "Spatial Audio", "accent": "violet", "desc": "Comfortable headset for game sound, voice chat, and immersive listening." },
+
+  { "id": 27, "name": "Vector Gaming Mouse", "category": "Input Device", "tier": "mid", "price": 3300, "badge": "Lightweight", "accent": "red", "desc": "Responsive gaming mouse for fast and accurate input control." },
+  { "id": 28, "name": "Forge Mechanical Keyboard", "category": "Input Device", "tier": "high", "price": 4400, "badge": "Hot-Swap", "accent": "cyan", "desc": "Mechanical keyboard for crisp typing, macros, and gaming input." },
+  { "id": 29, "name": "Wave USB Microphone", "category": "Input Device", "tier": "high", "price": 6100, "badge": "Streaming", "accent": "green", "desc": "USB microphone for voice input, streaming, and online meetings." },
+  { "id": 30, "name": "Focus 1080p Webcam", "category": "Input Device", "tier": "mid", "price": 3850, "badge": "Auto Focus", "accent": "blue", "desc": "Webcam for video input in classes, streaming, and conference calls." }
+]
+
