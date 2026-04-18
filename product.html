@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orders | LAB U</title>
+  <title>Product | LAB U</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
 
     <nav class="forge-home-nav">
       <a href="index.html">Home</a>
-      <a href="shop.html">Shop</a>
-      <a class="active" href="dashboard.html">Orders</a>
+      <a class="active" href="shop.html">Shop</a>
+      <a href="dashboard.html">Orders</a>
     </nav>
 
     <div class="forge-home-tools">
@@ -37,46 +37,29 @@
   <main class="site-shell">
     <section class="section">
       <div class="page-hero-grid">
-        <article class="panel page-hero-main">
-          <p class="section-label">Customer Account</p>
-          <h1 id="dashboardWelcome">Orders</h1>
-          <p class="page-copy-tight">Track each order from placement to delivery.</p>
-          <div class="hero-actions compact-actions">
-            <a class="btn btn-primary" href="shop.html">Shop</a>
-            <a class="btn btn-secondary" href="cart.html">Cart</a>
-          </div>
+        <article class="panel page-hero-main" id="productDetailView">
+          <div class="empty-state">Loading product...</div>
         </article>
-
-        <aside class="panel page-hero-side">
-          <p class="section-label">Status</p>
-          <div class="admin-overview customer-overview">
-            <article class="mini-stat">
-              <span>Total orders</span>
-              <strong id="dashboardOrderCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Cart items</span>
-              <strong id="dashboardCartCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>In transit</span>
-              <strong id="dashboardTransitCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Delivered</span>
-              <strong id="dashboardDeliveredCount">0</strong>
-            </article>
-          </div>
+        <aside class="panel page-hero-side" id="productDetailSide">
+          <div class="empty-state">Loading details...</div>
         </aside>
       </div>
     </section>
 
-    <section class="section dashboard-wrap">
-      <section class="dashboard-panel">
-        <p class="section-label">Order Tracking</p>
-        <h2>My Orders</h2>
-        <div id="orders" class="builder-list"></div>
-      </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="section-label">More Picks</p>
+          <h2>Related products</h2>
+          <p>Same category options you might want to add to your build.</p>
+        </div>
+        <div class="inline-actions">
+          <a class="btn btn-secondary" href="shop.html">Back to shop</a>
+          <a class="btn btn-primary" href="builder.html">Build a PC</a>
+        </div>
+      </div>
+
+      <div id="relatedProducts" class="product-grid"></div>
     </section>
   </main>
 

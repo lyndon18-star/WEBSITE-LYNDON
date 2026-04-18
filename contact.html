@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orders | LAB U</title>
+  <title>Contact | LAB U</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <nav class="forge-home-nav">
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
-      <a class="active" href="dashboard.html">Orders</a>
+      <a href="dashboard.html">Orders</a>
     </nav>
 
     <div class="forge-home-tools">
@@ -36,46 +36,56 @@
 
   <main class="site-shell">
     <section class="section">
-      <div class="page-hero-grid">
+      <div class="page-hero-grid contact-hero-grid">
         <article class="panel page-hero-main">
-          <p class="section-label">Customer Account</p>
-          <h1 id="dashboardWelcome">Orders</h1>
-          <p class="page-copy-tight">Track each order from placement to delivery.</p>
+          <p class="section-label">Support</p>
+          <h1>Contact<br>Us</h1>
+          <p class="page-copy-tight">Send a message about products, orders, or your custom build. Fields marked with <span class="required">*</span> are required.</p>
           <div class="hero-actions compact-actions">
+            <a class="btn btn-secondary" href="about.html">About LAB U</a>
             <a class="btn btn-primary" href="shop.html">Shop</a>
-            <a class="btn btn-secondary" href="cart.html">Cart</a>
           </div>
         </article>
-
-        <aside class="panel page-hero-side">
-          <p class="section-label">Status</p>
-          <div class="admin-overview customer-overview">
-            <article class="mini-stat">
-              <span>Total orders</span>
-              <strong id="dashboardOrderCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Cart items</span>
-              <strong id="dashboardCartCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>In transit</span>
-              <strong id="dashboardTransitCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Delivered</span>
-              <strong id="dashboardDeliveredCount">0</strong>
-            </article>
-          </div>
-        </aside>
       </div>
     </section>
 
-    <section class="section dashboard-wrap">
-      <section class="dashboard-panel">
-        <p class="section-label">Order Tracking</p>
-        <h2>My Orders</h2>
-        <div id="orders" class="builder-list"></div>
+    <section class="section">
+      <section class="dashboard-panel contact-panel">
+        <p class="section-label">Message</p>
+        <h2>Send a Message</h2>
+        <p>We will store your message locally for this demo build and show a confirmation after you submit.</p>
+
+        <form id="contactForm" class="contact-form" novalidate>
+          <div class="contact-form-grid">
+            <label class="form-field">
+              <span>First Name <span class="required" aria-hidden="true">*</span></span>
+              <input id="contactFirstName" name="firstName" type="text" placeholder="Enter your first name" autocomplete="given-name" required>
+            </label>
+
+            <label class="form-field">
+              <span>Last Name</span>
+              <input id="contactLastName" name="lastName" type="text" placeholder="Enter your last name" autocomplete="family-name">
+            </label>
+
+            <label class="form-field form-field-wide">
+              <span>Email <span class="required" aria-hidden="true">*</span></span>
+              <input id="contactEmail" name="email" type="email" placeholder="Enter your email" autocomplete="email" required>
+            </label>
+
+            <label class="form-field form-field-wide">
+              <span>Subject</span>
+              <input id="contactSubject" name="subject" type="text" placeholder="Enter your subject">
+            </label>
+
+            <label class="form-field form-field-wide">
+              <span>Message <span class="required" aria-hidden="true">*</span></span>
+              <textarea id="contactMessage" name="message" rows="8" placeholder="Enter your message" required></textarea>
+            </label>
+          </div>
+
+          <p id="contactFeedback" class="contact-feedback" aria-live="polite"></p>
+          <button class="btn btn-primary contact-submit" type="submit">Submit</button>
+        </form>
       </section>
     </section>
   </main>
@@ -159,6 +169,7 @@
       </div>
     </div>
   </footer>
+
   <script src="app.js"></script>
 </body>
 </html>

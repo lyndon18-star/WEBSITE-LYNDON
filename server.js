@@ -16,7 +16,7 @@ const SESSION_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 365 * 10; // 10 years
 const MAX_JSON_BODY_BYTES = 6_000_000;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@digitalforge.local";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin123!";
-const ORDER_STATUSES = ["placed", "waiting_carrier", "in_transit", "delivered"];
+const ORDER_STATUSES = ["placed", "waiting_carrier", "in_transit", "delivered", "cancelled"];
 const PAYMENT_METHODS = ["cash_on_delivery", "card"];
 const DEFAULT_USD_TO_PHP = Number(process.env.USD_TO_PHP || 56);
 const DEFAULT_PRICE_ROUND_TO = Number(process.env.PRICE_ROUND_TO || 50);
@@ -100,6 +100,7 @@ const statements = {
   createUser: db.prepare("INSERT INTO users (email, password_hash, full_name, role) VALUES (?, ?, ?, ?)"),
   updateUserRole: db.prepare("UPDATE users SET role = ? WHERE id = ?"),
   updateUserProfile: db.prepare("UPDATE users SET phone = ?, address = ?, default_payment = ?, avatar_data = ? WHERE id = ?"),
+  deleteUser: db.prepare("DELETE FROM users WHERE id = ?"),
   createSession: db.prepare("INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)"),
   findSession: db.prepare(`
     SELECT sessions.token, sessions.user_id, sessions.expires_at, users.*
@@ -146,6 +147,7 @@ const statements = {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `),
   updateOrderStatus: db.prepare("UPDATE orders SET status = ? WHERE id = ?"),
+  getOrderForUser: db.prepare("SELECT id, status FROM orders WHERE id = ? AND user_id = ?"),
   findOrderById: db.prepare("SELECT id FROM orders WHERE id = ?")
 };
 
@@ -248,13 +250,26 @@ function slugify(value) {
 }
 
 function normalizeOrderStatus(value) {
+  const key = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
   const map = {
     completed: "delivered",
+    canceled: "cancelled",
+    cancelled: "cancelled",
     waiting_for_carrier: "waiting_carrier",
     waiting: "waiting_carrier",
-    transit: "in_transit"
+    transit: "in_transit",
+    intransit: "in_transit",
+    shipped: "in_transit",
+    shipping: "in_transit"
   };
-  const normalized = map[String(value || "").trim().toLowerCase()] || String(value || "").trim().toLowerCase();
+
+  const normalized = map[key] || key;
   return ORDER_STATUSES.includes(normalized) ? normalized : "placed";
 }
 
@@ -372,7 +387,7 @@ function sendJson(request, response, statusCode, payload, headers = {}) {
     "Content-Type": "application/json; charset=utf-8",
     "Content-Length": Buffer.byteLength(body),
     "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Credentials": "true",
     ...headers
@@ -437,6 +452,15 @@ function requireAdmin(request, response) {
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validateDeliveryAddress(value, { required = true } = {}) {
+  const address = String(value || "").trim();
+  if (!address) return required ? "Please provide a delivery address." : "";
+  if (address.length < 10) return "Please enter a more detailed delivery address.";
+  if (address.length > 300) return "Delivery address is too long (max 300 characters).";
+  if (!/[a-z]/i.test(address)) return "Please include street/city details in the delivery address.";
+  return "";
 }
 
 function readJsonBody(request) {
@@ -673,13 +697,50 @@ async function handleUpdateProfile(request, response) {
   if (!auth) return;
 
   const payload = await readJsonBody(request);
-  const phone = String(payload.phone || "").trim();
-  const address = String(payload.address || "").trim();
-  const payment = String(payload.payment || "").trim();
-  const avatar = payload.avatarData ? String(payload.avatarData) : auth.user.avatar_data;
+  const phoneRaw = String(payload.phone || "").trim();
+  const phoneDigits = phoneRaw ? phoneRaw.replace(/\D/g, "") : "";
+  if (phoneRaw && (phoneDigits.length < 10 || phoneDigits.length > 15)) {
+    sendJson(request, response, 400, { error: "Please provide a valid contact number." });
+    return;
+  }
 
-  statements.updateUserProfile.run(phone, address, payment, avatar, auth.user.id);
+  const address = String(payload.address || "").trim();
+  const addressError = validateDeliveryAddress(address, { required: false });
+  if (addressError) {
+    sendJson(request, response, 400, { error: addressError });
+    return;
+  }
+
+  const payment = normalizePaymentMethod(payload.payment);
+  const avatar = payload.avatarData ? String(payload.avatarData) : auth.user.avatarData;
+
+  statements.updateUserProfile.run(phoneDigits, address, payment, avatar, auth.user.id);
   sendJson(request, response, 200, { ok: true });
+}
+
+async function handleDeleteAccount(request, response) {
+  const auth = requireAuth(request, response);
+  if (!auth) return;
+
+  const payload = await readJsonBody(request);
+  const confirm = String(payload.confirm || "").trim().toUpperCase();
+
+  if (confirm !== "DELETE") {
+    sendJson(request, response, 400, { error: "Confirmation required." });
+    return;
+  }
+
+  db.exec("BEGIN TRANSACTION");
+  try {
+    statements.deleteUser.run(auth.user.id);
+    db.exec("COMMIT");
+  } catch (error) {
+    db.exec("ROLLBACK");
+    sendJson(request, response, 500, { error: "Unable to delete account." });
+    return;
+  }
+
+  sendJson(request, response, 200, { ok: true }, { "Set-Cookie": clearSessionCookie() });
 }
 
 async function handleAddCartItem(request, response) {
@@ -753,8 +814,20 @@ async function handleCheckout(request, response) {
   const address = String(payload.address || "").trim();
   const contactNumber = String(payload.contactNumber || "").trim();
 
-  if (!address || !contactNumber) {
-    sendJson(request, response, 400, { error: "Delivery address and contact number are required." });
+  const addressError = validateDeliveryAddress(address, { required: true });
+  if (addressError) {
+    sendJson(request, response, 400, { error: addressError });
+    return;
+  }
+
+  if (!contactNumber) {
+    sendJson(request, response, 400, { error: "Please provide a contact number." });
+    return;
+  }
+
+  const contactDigits = contactNumber.replace(/\D/g, "");
+  if (contactDigits.length < 10 || contactDigits.length > 15) {
+    sendJson(request, response, 400, { error: "Please provide a valid contact number." });
     return;
   }
 
@@ -786,7 +859,7 @@ async function handleCheckout(request, response) {
 
   db.exec("BEGIN TRANSACTION");
   try {
-    statements.createOrder.run(auth.user.id, JSON.stringify(snapshots), total, "placed", paymentMethod, address, contactNumber);
+    statements.createOrder.run(auth.user.id, JSON.stringify(snapshots), total, "placed", paymentMethod, address, contactDigits);
     if (!payload.isBuyNow) {
       statements.clearCart.run(auth.user.id);
     }
@@ -796,6 +869,44 @@ async function handleCheckout(request, response) {
     db.exec("ROLLBACK");
     sendJson(request, response, 500, { error: "Checkout failed." });
   }
+}
+
+async function handleCancelOrder(request, response) {
+  const auth = requireAuth(request, response);
+  if (!auth) return;
+
+  const payload = await readJsonBody(request);
+  const orderId = Number(payload.orderId);
+
+  if (Number.isNaN(orderId)) {
+    sendJson(request, response, 400, { error: "Invalid order." });
+    return;
+  }
+
+  const order = statements.getOrderForUser.get(orderId, auth.user.id);
+  if (!order) {
+    sendJson(request, response, 404, { error: "Order not found." });
+    return;
+  }
+
+  const status = normalizeOrderStatus(order.status);
+  if (status === "cancelled") {
+    sendJson(request, response, 200, { ok: true });
+    return;
+  }
+
+  if (status === "in_transit" || status === "delivered") {
+    sendJson(request, response, 409, { error: "This order can no longer be cancelled." });
+    return;
+  }
+
+  if (status !== "placed" && status !== "waiting_carrier") {
+    sendJson(request, response, 409, { error: "This order cannot be cancelled." });
+    return;
+  }
+
+  statements.updateOrderStatus.run("cancelled", orderId);
+  sendJson(request, response, 200, { ok: true });
 }
 
 function handleGetAdminOrders(request, response) {
@@ -877,7 +988,7 @@ const server = http.createServer(async (request, response) => {
       const origin = request.headers.origin || "*";
       response.writeHead(204, {
         "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Credentials": "true"
       });
@@ -914,6 +1025,11 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
+    if (pathname === "/api/user/delete" && request.method === "POST") {
+      await handleDeleteAccount(request, response);
+      return;
+    }
+
     // Cart Routes
     if (pathname === "/api/cart" && request.method === "GET") {
       handleGetCart(request, response);
@@ -935,6 +1051,10 @@ const server = http.createServer(async (request, response) => {
     }
     if (pathname === "/api/orders/checkout" && request.method === "POST") {
       await handleCheckout(request, response);
+      return;
+    }
+    if (pathname === "/api/orders/cancel" && request.method === "POST") {
+      await handleCancelOrder(request, response);
       return;
     }
 

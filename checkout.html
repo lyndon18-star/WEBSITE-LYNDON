@@ -7,31 +7,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-mark">LAB U</span>
-        <span class="brand-name">Unified Storefront</span>
-      </a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="dashboard.html">Orders</a>
-      </nav>
-      <div class="nav-tools">
-        <form class="search-box" action="shop.html" method="get">
-          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
-          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
-        </form>
-        <div class="nav-tools-icons">
-          <a class="nav-icon" href="cart.html" title="Cart">
-            <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
-            <span class="nav-badge" data-cart-count>0</span>
-          </a>
-          <a class="nav-icon" href="login.html" title="Account">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
-          </a>
-        </div>
+  <header class="forge-home-topbar">
+    <a class="forge-home-brand" href="index.html">LAB U</a>
+
+    <nav class="forge-home-nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="shop.html">Shop</a>
+      <a href="dashboard.html">Orders</a>
+    </nav>
+
+    <div class="forge-home-tools">
+      <form class="forge-home-search" action="shop.html" method="get">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+        <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+      </form>
+
+      <div class="forge-home-icons">
+        <a class="forge-home-icon nav-icon" href="cart.html" title="Cart" aria-label="Cart">
+          <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
+          <span class="nav-badge" data-cart-count>0</span>
+        </a>
+        <a class="forge-home-icon nav-icon" href="login.html" title="Account" aria-label="Account">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        </a>
       </div>
     </div>
   </header>
@@ -46,11 +44,11 @@
         <div class="forge-form-grid">
           <div class="forge-form-field">
             <span>Customer Name</span>
-            <input type="text" id="checkoutNameDisplay" disabled value="Loading...">
+            <input type="text" id="checkoutNameDisplay" disabled placeholder="Full name">
           </div>
           <div class="forge-form-field">
             <span>Email Address</span>
-            <input type="text" id="checkoutEmailDisplay" disabled value="Loading...">
+            <input type="email" id="checkoutEmailDisplay" disabled placeholder="you@example.com">
           </div>
         </div>
       </div>
@@ -143,7 +141,85 @@
     </div>
   </main>
 
-  <footer class="footer-note">LAB U</footer>
+  <footer class="footer-note site-footer">
+    <div class="footer-shell">
+      <div class="footer-header">
+        <div class="footer-brand">
+          <span class="footer-mark">LAB U</span>
+          <span class="footer-sub">Unified Storefront</span>
+        </div>
+        <div class="footer-legal">
+          <span>&copy; 2026</span>
+          <span class="footer-dot">&bull;</span>
+          <span>Built for modern builders</span>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <section class="footer-card">
+          <h3 class="footer-title"><a class="footer-title-link" href="about.html">About LAB U</a></h3>
+          <p class="footer-text">LAB U is an all-in-one storefront for PC parts and peripherals. Browse components, build a custom rig, and track orders from checkout to delivery.</p>
+          <div class="footer-pill-row">
+            <span class="footer-pill">Secure checkout</span>
+            <span class="footer-pill">COD &amp; Card</span>
+            <span class="footer-pill">2-5 days ETA</span>
+          </div>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Shop</h3>
+          <nav class="footer-links" aria-label="Shop links">
+            <a href="shop.html">Browse products</a>
+            <a href="shop.html?sort=popular">Top sellers</a>
+            <a href="builder.html">Build a PC</a>
+            <a href="cart.html">View cart</a>
+          </nav>
+          <div class="footer-pill-row" aria-label="Popular categories">
+            <a class="footer-pill" href="shop.html?filter=CPU">CPU</a>
+            <a class="footer-pill" href="shop.html?filter=GPU">GPU</a>
+            <a class="footer-pill" href="shop.html?filter=RAM">RAM</a>
+            <a class="footer-pill" href="shop.html?filter=SSD">SSD</a>
+          </div>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Account</h3>
+          <nav class="footer-links" aria-label="Account links">
+            <a href="login.html">Sign in</a>
+            <a href="register.html">Create account</a>
+            <a href="profile.html">Profile settings</a>
+            <a href="dashboard.html">Orders</a>
+          </nav>
+          <p class="footer-text footer-text-tight">Sign in to save builds, track orders, and manage delivery details.</p>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Support</h3>
+          <nav class="footer-links" aria-label="Support links">
+            <a href="contact.html">Contact us</a>
+            <a href="dashboard.html">Track an order</a>
+            <a href="checkout.html">Payment options</a>
+            <a href="about.html">Our team</a>
+          </nav>
+        </section>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <a class="footer-inline-link" href="about.html">About</a>
+          <span class="footer-dot">&bull;</span>
+          <a class="footer-inline-link" href="contact.html">Support</a>
+          <span class="footer-dot">&bull;</span>
+          <a class="footer-inline-link" href="shop.html">Shop</a>
+        </div>
+        <div class="footer-badges" aria-label="Checkout highlights">
+          <span class="footer-badge">Secure checkout</span>
+          <span class="footer-badge">Cash on delivery</span>
+          <span class="footer-badge">Card payments</span>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script src="app.js"></script>
 </body>
 </html>

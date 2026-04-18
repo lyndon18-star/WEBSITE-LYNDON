@@ -1,0 +1,12 @@
+{
+  "name": "labu-unified-storefront",
+  "private": true,
+  "version": "0.1.0",
+  "description": "LAB U Unified Storefront (static UI + Node.js API)",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

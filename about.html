@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orders | LAB U</title>
+  <title>About | LAB U</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <nav class="forge-home-nav">
       <a href="index.html">Home</a>
       <a href="shop.html">Shop</a>
-      <a class="active" href="dashboard.html">Orders</a>
+      <a href="dashboard.html">Orders</a>
     </nav>
 
     <div class="forge-home-tools">
@@ -38,44 +38,102 @@
     <section class="section">
       <div class="page-hero-grid">
         <article class="panel page-hero-main">
-          <p class="section-label">Customer Account</p>
-          <h1 id="dashboardWelcome">Orders</h1>
-          <p class="page-copy-tight">Track each order from placement to delivery.</p>
+          <p class="section-label">About LAB U</p>
+          <h1>A Modern<br>PC Storefront</h1>
+          <p class="page-copy-tight">LAB U is an all-in-one storefront for PC parts and peripherals. Browse components, build a custom rig, and track your orders with a clean, modern experience.</p>
           <div class="hero-actions compact-actions">
-            <a class="btn btn-primary" href="shop.html">Shop</a>
-            <a class="btn btn-secondary" href="cart.html">Cart</a>
+            <a class="btn btn-primary" href="shop.html">Start Shopping</a>
+            <a class="btn btn-secondary" href="builder.html">Build a PC</a>
           </div>
         </article>
 
         <aside class="panel page-hero-side">
-          <p class="section-label">Status</p>
-          <div class="admin-overview customer-overview">
-            <article class="mini-stat">
-              <span>Total orders</span>
-              <strong id="dashboardOrderCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Cart items</span>
-              <strong id="dashboardCartCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>In transit</span>
-              <strong id="dashboardTransitCount">0</strong>
-            </article>
-            <article class="mini-stat">
-              <span>Delivered</span>
-              <strong id="dashboardDeliveredCount">0</strong>
-            </article>
+          <p class="section-label">Built With</p>
+          <h2>Languages &amp; Stack</h2>
+          <p class="page-copy-tight">Designed with core web technologies and a lightweight Node + SQLite backend for accounts, carts, and orders.</p>
+          <div class="footer-pill-row" aria-label="Languages used">
+            <span class="footer-pill">HTML</span>
+            <span class="footer-pill">CSS</span>
+            <span class="footer-pill">JavaScript</span>
+            <span class="footer-pill">Node.js</span>
+            <span class="footer-pill">SQLite</span>
+            <span class="footer-pill">SQL</span>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section dashboard-wrap">
+    <section class="section">
       <section class="dashboard-panel">
-        <p class="section-label">Order Tracking</p>
-        <h2>My Orders</h2>
-        <div id="orders" class="builder-list"></div>
+        <p class="section-label">What You Can Do</p>
+        <h2>Features</h2>
+        <div class="mini-stat-grid" role="list" aria-label="LAB U features">
+          <article class="mini-stat" role="listitem">
+            <span>Shop</span>
+            <strong>Browse parts fast</strong>
+            <p>Filter by category, compare tiers, and view product details.</p>
+          </article>
+          <article class="mini-stat" role="listitem">
+            <span>Builder</span>
+            <strong>Build a full rig</strong>
+            <p>Select components and add your whole build to the cart.</p>
+          </article>
+          <article class="mini-stat" role="listitem">
+            <span>Checkout</span>
+            <strong>Pay COD or Card</strong>
+            <p>Checkout flow supports cash-on-delivery and Visa card validation.</p>
+          </article>
+          <article class="mini-stat" role="listitem">
+            <span>Orders</span>
+            <strong>Track delivery</strong>
+            <p>See your order status from placement to delivered.</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="section">
+      <section class="dashboard-panel">
+        <p class="section-label">Team</p>
+        <h2>Developers</h2>
+        <p>Meet the team behind this build.</p>
+        <div class="team-grid" role="list" aria-label="Developers">
+          <article class="team-card" role="listitem">
+            <img class="team-avatar" src="assets/team/dev-1.jpg" alt="Senting, Jericho P. portrait" loading="lazy">
+            <div class="team-meta">
+              <strong class="team-name">Senting, Jericho P.</strong>
+              <span class="team-role">System Flow Handler</span>
+            </div>
+          </article>
+          <article class="team-card" role="listitem">
+            <img class="team-avatar" src="assets/team/dev-2.jpg" alt="Cardozo, Juan Lyan Kenshin D. portrait" loading="lazy">
+            <div class="team-meta">
+              <strong class="team-name">Cardozo, Juan Lyan Kenshin D.</strong>
+              <span class="team-role">Documentary</span>
+            </div>
+          </article>
+          <article class="team-card" role="listitem">
+            <img class="team-avatar" src="assets/team/dev-3.jpg" alt="Oiguel, Phillip Jerome D. portrait" loading="lazy">
+            <div class="team-meta">
+              <strong class="team-name">Oiguel, Phillip Jerome D.</strong>
+              <span class="team-role">Designer</span>
+            </div>
+          </article>
+          <article class="team-card" role="listitem">
+            <img class="team-avatar" src="assets/team/dev-4.jpg" alt="Escoto, Jerwin Maurice A. portrait" loading="lazy">
+            <div class="team-meta">
+              <strong class="team-name">Escoto, Jerwin Maurice A.</strong>
+              <span class="team-role">Junior Developer</span>
+            </div>
+          </article>
+          <article class="team-card" role="listitem">
+            <img class="team-avatar" src="assets/team/dev-5.jpg" alt="Bautista, Lyndon A. portrait" loading="lazy">
+            <div class="team-meta">
+              <strong class="team-name">Bautista, Lyndon A.</strong>
+              <span class="team-role">Project Manager / Developer</span>
+            </div>
+          </article>
+        </div>
       </section>
     </section>
   </main>
@@ -159,6 +217,7 @@
       </div>
     </div>
   </footer>
+
   <script src="app.js"></script>
 </body>
 </html>

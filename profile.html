@@ -80,32 +80,30 @@
   </style>
 </head>
 <body id="profileBody">
-  <header class="navbar">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <span class="brand-mark">LAB U</span>
-        <span class="brand-name">Unified Storefront</span>
-      </a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="builder.html">Build a PC</a>
-        <a href="dashboard.html">Orders</a>
-      </nav>
-      <div class="nav-tools">
-        <form class="search-box" action="shop.html" method="get">
-          <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
-          <input type="text" name="search" placeholder="Search components..." aria-label="Search">
-        </form>
-        <div class="nav-tools-icons">
-          <a class="nav-icon" href="cart.html" title="Cart">
-            <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
-            <span class="nav-badge" data-cart-count>0</span>
-          </a>
-          <a class="nav-icon" href="login.html" title="Account">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
-          </a>
-        </div>
+  <header class="forge-home-topbar">
+    <a class="forge-home-brand" href="index.html">LAB U</a>
+
+    <nav class="forge-home-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="builder.html">Build a PC</a>
+      <a href="dashboard.html">Orders</a>
+    </nav>
+
+    <div class="forge-home-tools">
+      <form class="forge-home-search" action="shop.html" method="get">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.35-4.35M19 11a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+        <input type="text" name="search" placeholder="Search components..." aria-label="Search">
+      </form>
+
+      <div class="forge-home-icons">
+        <a class="forge-home-icon nav-icon" href="cart.html" title="Cart" aria-label="Cart">
+          <svg viewBox="0 0 24 24"><path d="M4 5h2l.7 3M7 13h10l1.8-7H6.2M7 13l-1.4 5M17 13l1.4 5M9 20a1 1 0 100 2 1 1 0 000-2zM15 20a1 1 0 100 2 1 1 0 000-2z"/></svg>
+          <span class="nav-badge" data-cart-count>0</span>
+        </a>
+        <a class="forge-home-icon nav-icon" href="login.html" title="Account" aria-label="Account">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        </a>
       </div>
     </div>
   </header>
@@ -179,11 +177,98 @@
         <div class="forge-section" style="background: rgba(33, 212, 253, 0.02);">
           <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px;" id="saveProfileBtn">Save Profile Settings</button>
         </div>
+
+        <div class="forge-section danger-zone">
+          <div class="forge-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            Danger Zone
+          </div>
+          <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 18px;">Delete your account permanently. This will remove your profile, cart, and order history.</p>
+          <button type="button" class="btn btn-danger" style="width: 100%; padding: 18px;" id="deleteAccountBtn">Delete Account</button>
+        </div>
       </form>
     </div>
   </main>
 
-  <footer class="footer-note">LAB U</footer>
+  <footer class="footer-note site-footer">
+    <div class="footer-shell">
+      <div class="footer-header">
+        <div class="footer-brand">
+          <span class="footer-mark">LAB U</span>
+          <span class="footer-sub">Unified Storefront</span>
+        </div>
+        <div class="footer-legal">
+          <span>&copy; 2026</span>
+          <span class="footer-dot">&bull;</span>
+          <span>Built for modern builders</span>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <section class="footer-card">
+          <h3 class="footer-title"><a class="footer-title-link" href="about.html">About LAB U</a></h3>
+          <p class="footer-text">LAB U is an all-in-one storefront for PC parts and peripherals. Browse components, build a custom rig, and track orders from checkout to delivery.</p>
+          <div class="footer-pill-row">
+            <span class="footer-pill">Secure checkout</span>
+            <span class="footer-pill">COD &amp; Card</span>
+            <span class="footer-pill">2-5 days ETA</span>
+          </div>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Shop</h3>
+          <nav class="footer-links" aria-label="Shop links">
+            <a href="shop.html">Browse products</a>
+            <a href="shop.html?sort=popular">Top sellers</a>
+            <a href="builder.html">Build a PC</a>
+            <a href="cart.html">View cart</a>
+          </nav>
+          <div class="footer-pill-row" aria-label="Popular categories">
+            <a class="footer-pill" href="shop.html?filter=CPU">CPU</a>
+            <a class="footer-pill" href="shop.html?filter=GPU">GPU</a>
+            <a class="footer-pill" href="shop.html?filter=RAM">RAM</a>
+            <a class="footer-pill" href="shop.html?filter=SSD">SSD</a>
+          </div>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Account</h3>
+          <nav class="footer-links" aria-label="Account links">
+            <a href="login.html">Sign in</a>
+            <a href="register.html">Create account</a>
+            <a href="profile.html">Profile settings</a>
+            <a href="dashboard.html">Orders</a>
+          </nav>
+          <p class="footer-text footer-text-tight">Sign in to save builds, track orders, and manage delivery details.</p>
+        </section>
+
+        <section class="footer-card">
+          <h3 class="footer-title">Support</h3>
+          <nav class="footer-links" aria-label="Support links">
+            <a href="contact.html">Contact us</a>
+            <a href="dashboard.html">Track an order</a>
+            <a href="checkout.html">Payment options</a>
+            <a href="about.html">Our team</a>
+          </nav>
+        </section>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <a class="footer-inline-link" href="about.html">About</a>
+          <span class="footer-dot">&bull;</span>
+          <a class="footer-inline-link" href="contact.html">Support</a>
+          <span class="footer-dot">&bull;</span>
+          <a class="footer-inline-link" href="shop.html">Shop</a>
+        </div>
+        <div class="footer-badges" aria-label="Checkout highlights">
+          <span class="footer-badge">Secure checkout</span>
+          <span class="footer-badge">Cash on delivery</span>
+          <span class="footer-badge">Card payments</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script src="app.js"></script>
   <script>
@@ -244,6 +329,34 @@
         return;
       }
 
+      const phoneNode = document.getElementById('profilePhone');
+      const addressNode = document.getElementById('profileAddress');
+
+      const phoneRaw = String(phoneNode?.value || "").trim();
+      const phoneDigits = digitsOnly(phoneRaw);
+      const addressRaw = String(addressNode?.value || "").trim();
+
+      let hasError = false;
+
+      if (phoneRaw && (phoneDigits.length < 10 || phoneDigits.length > 15)) {
+        setFieldError(phoneNode, "Please provide a valid contact number.");
+        safeFocus(phoneNode);
+        hasError = true;
+      } else {
+        setFieldError(phoneNode, "");
+      }
+
+      const addressError = deliveryAddressError(addressRaw, { required: false });
+      if (addressError) {
+        setFieldError(addressNode, addressError);
+        if (!hasError) safeFocus(addressNode);
+        hasError = true;
+      } else {
+        setFieldError(addressNode, "");
+      }
+
+      if (hasError) return;
+
       const btn = document.getElementById('saveProfileBtn');
       btn.disabled = true;
       btn.textContent = "Saving...";
@@ -252,8 +365,8 @@
         await apiRequest("/api/user/profile", {
           method: "PUT",
           body: JSON.stringify({
-            phone: document.getElementById('profilePhone').value,
-            address: document.getElementById('profileAddress').value,
+            phone: phoneDigits,
+            address: addressRaw,
             payment: document.querySelector('input[name="profilePayment"]:checked').value,
             avatarData: currentAvatarData
           })
@@ -272,6 +385,52 @@
       } finally {
         btn.disabled = false;
         btn.textContent = "Save Profile Settings";
+      }
+    });
+
+    document.getElementById('deleteAccountBtn')?.addEventListener('click', async function() {
+      if (!currentUser) {
+        alert("You must be logged in to delete your account.");
+        navigateWithTransition('login.html');
+        return;
+      }
+
+      if (!confirm("Delete your account permanently? This cannot be undone.")) return;
+
+      const typed = prompt("Type DELETE to confirm account deletion:");
+      if (String(typed || "").trim().toUpperCase() !== "DELETE") {
+        alert("Account deletion cancelled.");
+        return;
+      }
+
+      const btn = document.getElementById('deleteAccountBtn');
+      btn.disabled = true;
+      btn.textContent = "Deleting...";
+
+      try {
+        await apiRequest("/api/user/delete", {
+          method: "POST",
+          body: JSON.stringify({ confirm: "DELETE" })
+        });
+
+        currentUser = null;
+        cart = [];
+        orders = [];
+        adminOrders = [];
+        localStorage.removeItem("cart_guest");
+        localStorage.removeItem("orders_guest");
+        await save();
+        updateCartCount();
+        updateAuthUI();
+        applyRoleUI();
+
+        alert("Account deleted.");
+        navigateWithTransition("index.html");
+      } catch (error) {
+        const message = error.message === "Failed to fetch" ? accountServerMessage() : error.message;
+        alert(message || "Unable to delete account.");
+        btn.disabled = false;
+        btn.textContent = "Delete Account";
       }
     });
 
