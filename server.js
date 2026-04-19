@@ -13,6 +13,7 @@ const DB_PATH = path.join(DATA_DIR, "forge-auth.db");
 const PRODUCT_ASSET_DIR = path.join(ROOT_DIR, "assets", "products");
 const SESSION_COOKIE = "labu_session";
 const SESSION_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 365 * 10; // 10 years
+const RESET_TOKEN_TTL_MS = 1000 * 60 * 30; // 30 minutes
 const MAX_JSON_BODY_BYTES = 6_000_000;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@digitalforge.local";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin123!";
@@ -41,10 +42,43 @@ function ensureColumn(tableName, columnName, definition) {
   }
 }
 
+function seedExampleStocksIfAllOut() {
+  const products = db.prepare("SELECT id, tier, category, stock FROM products ORDER BY id ASC").all();
+  if (!products.length) return;
+
+  const hasInStock = products.some((product) => Number(product.stock) > 0);
+  if (hasInStock) return;
+
+  const tierBaseStock = { mid: 26, high: 17, elite: 9 };
+  const categoryStockAdjust = {
+    GPU: -2,
+    CPU: -1,
+    Motherboard: 1,
+    RAM: 3,
+    SSD: 2,
+    "Input Device": 4,
+    "Output Device": 2,
+    Cooling: 1,
+    PSU: 1,
+    Case: 2
+  };
+
+  const updateStock = db.prepare("UPDATE products SET stock = ? WHERE id = ?");
+  products.forEach((product, index) => {
+    const tier = String(product.tier || "mid").toLowerCase();
+    const base = tierBaseStock[tier] ?? 20;
+    const categoryAdjust = categoryStockAdjust[product.category] ?? 0;
+    const wave = (index % 4) - 1;
+    const stock = Math.max(1, base + categoryAdjust + wave);
+    updateStock.run(stock, product.id);
+  });
+}
+
 function runMigrations() {
   ensureColumn("users", "role", "TEXT NOT NULL DEFAULT 'customer'");
   ensureColumn("orders", "payment_method", "TEXT NOT NULL DEFAULT 'cash_on_delivery'");
   ensureColumn("products", "image_url", "TEXT");
+  ensureColumn("products", "stock", "INTEGER NOT NULL DEFAULT 20");
   ensureColumn("orders", "address", "TEXT");
   ensureColumn("orders", "contact_number", "TEXT");
   ensureColumn("users", "avatar_data", "TEXT");
@@ -56,6 +90,9 @@ function runMigrations() {
   db.prepare("UPDATE orders SET status = 'placed' WHERE status IS NULL OR trim(status) = ''").run();
   db.prepare("UPDATE orders SET status = 'delivered' WHERE status = 'completed'").run();
   db.prepare("UPDATE orders SET payment_method = 'cash_on_delivery' WHERE payment_method IS NULL OR trim(payment_method) = ''").run();
+  db.prepare("UPDATE products SET stock = 20 WHERE stock IS NULL").run();
+  db.prepare("UPDATE products SET stock = 0 WHERE stock < 0").run();
+  seedExampleStocksIfAllOut();
 
   migrateProductPricesToPHP();
 }
@@ -93,12 +130,14 @@ function migrateProductPricesToPHP() {
 }
 
 db.prepare("DELETE FROM sessions WHERE expires_at <= ?").run(Date.now());
+db.prepare("DELETE FROM password_reset_tokens WHERE expires_at <= ?").run(Date.now());
 
 const statements = {
   findUserByEmail: db.prepare("SELECT * FROM users WHERE lower(email) = lower(?)"),
   findUserById: db.prepare("SELECT * FROM users WHERE id = ?"),
   createUser: db.prepare("INSERT INTO users (email, password_hash, full_name, role) VALUES (?, ?, ?, ?)"),
   updateUserRole: db.prepare("UPDATE users SET role = ? WHERE id = ?"),
+  updateUserPassword: db.prepare("UPDATE users SET password_hash = ? WHERE id = ?"),
   updateUserProfile: db.prepare("UPDATE users SET phone = ?, address = ?, default_payment = ?, avatar_data = ? WHERE id = ?"),
   deleteUser: db.prepare("DELETE FROM users WHERE id = ?"),
   createSession: db.prepare("INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)"),
@@ -109,14 +148,22 @@ const statements = {
     WHERE sessions.token = ?
   `),
   deleteSession: db.prepare("DELETE FROM sessions WHERE token = ?"),
+  deleteSessionsByUser: db.prepare("DELETE FROM sessions WHERE user_id = ?"),
+  createPasswordResetToken: db.prepare("INSERT INTO password_reset_tokens (token, user_id, expires_at) VALUES (?, ?, ?)"),
+  findPasswordResetToken: db.prepare("SELECT token, user_id, expires_at FROM password_reset_tokens WHERE token = ? AND expires_at > ?"),
+  deletePasswordResetToken: db.prepare("DELETE FROM password_reset_tokens WHERE token = ?"),
+  deletePasswordResetTokensByUser: db.prepare("DELETE FROM password_reset_tokens WHERE user_id = ?"),
   
   // Products
   getAllProducts: db.prepare("SELECT * FROM products ORDER BY id ASC"),
   getProductById: db.prepare("SELECT * FROM products WHERE id = ?"),
+  updateProductStock: db.prepare("UPDATE products SET stock = ? WHERE id = ?"),
+  incrementProductStock: db.prepare("UPDATE products SET stock = stock + ? WHERE id = ?"),
+  decrementProductStockIfEnough: db.prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?"),
   countProducts: db.prepare("SELECT COUNT(*) as count FROM products"),
   insertProduct: db.prepare(`
-    INSERT INTO products (name, category, tier, price, badge, accent, description, image_url)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO products (name, category, tier, price, stock, badge, accent, description, image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `),
 
   // Cart
@@ -147,8 +194,8 @@ const statements = {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `),
   updateOrderStatus: db.prepare("UPDATE orders SET status = ? WHERE id = ?"),
-  getOrderForUser: db.prepare("SELECT id, status FROM orders WHERE id = ? AND user_id = ?"),
-  findOrderById: db.prepare("SELECT id FROM orders WHERE id = ?")
+  getOrderForUser: db.prepare("SELECT id, status, items_json FROM orders WHERE id = ? AND user_id = ?"),
+  getOrderById: db.prepare("SELECT id, status, items_json FROM orders WHERE id = ?")
 };
 
 async function seedProducts() {
@@ -189,9 +236,27 @@ async function seedProducts() {
     { name: "Focus 1080p Webcam", category: "Input Device", tier: "mid", price: 3850, badge: "Auto Focus", accent: "blue", desc: "Webcam for video input in classes, streaming, and conference calls." }
   ];
 
-  for (const p of initialProducts) {
-    statements.insertProduct.run(p.name, p.category, p.tier, p.price, p.badge, p.accent, p.desc, null);
-  }
+  const tierBaseStock = { mid: 26, high: 17, elite: 9 };
+  const categoryStockAdjust = {
+    GPU: -2,
+    CPU: -1,
+    Motherboard: 1,
+    RAM: 3,
+    SSD: 2,
+    "Input Device": 4,
+    "Output Device": 2,
+    Cooling: 1,
+    PSU: 1,
+    Case: 2
+  };
+
+  initialProducts.forEach((p, index) => {
+    const base = tierBaseStock[p.tier] ?? 20;
+    const categoryAdjust = categoryStockAdjust[p.category] ?? 0;
+    const wave = (index % 4) - 1;
+    const stock = Math.max(1, base + categoryAdjust + wave);
+    statements.insertProduct.run(p.name, p.category, p.tier, p.price, stock, p.badge, p.accent, p.desc, null);
+  });
 }
 seedProducts();
 
@@ -278,6 +343,12 @@ function normalizePaymentMethod(value) {
   return PAYMENT_METHODS.includes(normalized) ? normalized : "cash_on_delivery";
 }
 
+function sanitizeStock(value) {
+  const parsed = Math.floor(Number(value));
+  if (!Number.isFinite(parsed)) return 0;
+  return Math.max(0, parsed);
+}
+
 function serializeUser(user) {
   return {
     id: user.id,
@@ -299,6 +370,7 @@ function serializeProduct(product) {
     category: product.category,
     tier: product.tier,
     price: Number(product.price || 0),
+    stock: sanitizeStock(product.stock),
     badge: product.badge || "",
     accent: product.accent || "cyan",
     desc: product.description || "",
@@ -348,10 +420,27 @@ function serializeOrder(order) {
   };
 }
 
+function restockOrderItems(rawItems) {
+  for (const item of parseOrderItems(rawItems)) {
+    const productId = Number(item.id);
+    const quantity = Math.max(1, Math.floor(Number(item.quantity || 1)));
+    if (!Number.isFinite(productId) || productId <= 0 || quantity <= 0) continue;
+    statements.incrementProductStock.run(quantity, productId);
+  }
+}
+
 function createSession(userId) {
   const token = randomBytes(32).toString("hex");
   const expiresAt = Date.now() + SESSION_MAX_AGE_MS;
   statements.createSession.run(token, userId, expiresAt);
+  return { token, expiresAt };
+}
+
+function createPasswordResetToken(userId) {
+  const token = randomBytes(32).toString("hex");
+  const expiresAt = Date.now() + RESET_TOKEN_TTL_MS;
+  statements.deletePasswordResetTokensByUser.run(userId);
+  statements.createPasswordResetToken.run(token, userId, expiresAt);
   return { token, expiresAt };
 }
 
@@ -664,6 +753,80 @@ async function handleLogin(request, response) {
   );
 }
 
+async function handleForgotPassword(request, response) {
+  const payload = await readJsonBody(request);
+  const email = String(payload.email || "").trim();
+  const password = String(payload.password || payload.newPassword || "");
+  const confirmPassword = String(payload.confirmPassword || payload.confirm || "");
+
+  if (!validateEmail(email)) {
+    sendJson(request, response, 400, { error: "Please provide a valid email address." });
+    return;
+  }
+  if (password.length < 6) {
+    sendJson(request, response, 400, { error: "Password must be at least 6 characters long." });
+    return;
+  }
+  if (password !== confirmPassword) {
+    sendJson(request, response, 400, { error: "Passwords do not match." });
+    return;
+  }
+
+  const user = statements.findUserByEmail.get(email);
+  if (!user) {
+    sendJson(request, response, 404, { error: "No account found for that email." });
+    return;
+  }
+
+  const passwordHash = hashPassword(password);
+  db.exec("BEGIN TRANSACTION");
+  try {
+    statements.updateUserPassword.run(passwordHash, user.id);
+    statements.deletePasswordResetTokensByUser.run(user.id);
+    statements.deleteSessionsByUser.run(user.id);
+    db.exec("COMMIT");
+    sendJson(request, response, 200, { ok: true, message: "Password reset successful. Please sign in." }, { "Set-Cookie": clearSessionCookie() });
+  } catch (error) {
+    db.exec("ROLLBACK");
+    sendJson(request, response, 500, { error: "Unable to reset password right now." });
+  }
+}
+
+async function handleResetPassword(request, response) {
+  const payload = await readJsonBody(request);
+  const token = String(payload.token || "").trim();
+  const password = String(payload.password || "");
+
+  if (!token) {
+    sendJson(request, response, 400, { error: "Reset token is required." });
+    return;
+  }
+
+  if (password.length < 6) {
+    sendJson(request, response, 400, { error: "Password must be at least 6 characters long." });
+    return;
+  }
+
+  const resetToken = statements.findPasswordResetToken.get(token, Date.now());
+  if (!resetToken) {
+    sendJson(request, response, 400, { error: "Reset token is invalid or expired." });
+    return;
+  }
+
+  const passwordHash = hashPassword(password);
+  db.exec("BEGIN TRANSACTION");
+  try {
+    statements.updateUserPassword.run(passwordHash, resetToken.user_id);
+    statements.deletePasswordResetTokensByUser.run(resetToken.user_id);
+    statements.deleteSessionsByUser.run(resetToken.user_id);
+    db.exec("COMMIT");
+    sendJson(request, response, 200, { ok: true }, { "Set-Cookie": clearSessionCookie() });
+  } catch (error) {
+    db.exec("ROLLBACK");
+    sendJson(request, response, 500, { error: "Unable to reset password right now." });
+  }
+}
+
 function handleCurrentUser(request, response) {
   const auth = requireAuth(request, response);
   if (!auth) return;
@@ -688,7 +851,29 @@ function handleGetCart(request, response) {
   const auth = requireAuth(request, response);
   if (!auth) return;
 
-  const items = statements.getCartItems.all(auth.user.id).map(serializeCartItem);
+  const rows = statements.getCartItems.all(auth.user.id);
+  const items = [];
+
+  for (const row of rows) {
+    const productId = Number(row.id);
+    const stock = sanitizeStock(row.stock);
+    const quantity = Math.max(0, Math.floor(Number(row.quantity || 1)));
+
+    if (!Number.isFinite(productId) || productId <= 0 || quantity <= 0 || stock <= 0) {
+      if (Number.isFinite(productId) && productId > 0) {
+        statements.deleteCartItem.run(auth.user.id, productId);
+      }
+      continue;
+    }
+
+    const cappedQuantity = Math.min(quantity, stock);
+    if (cappedQuantity !== quantity) {
+      statements.upsertCartItem.run(auth.user.id, productId, cappedQuantity);
+    }
+
+    items.push(serializeCartItem({ ...row, quantity: cappedQuantity }));
+  }
+
   sendJson(request, response, 200, { items });
 }
 
@@ -762,13 +947,28 @@ async function handleAddCartItem(request, response) {
     return;
   }
 
+  const availableStock = sanitizeStock(product.stock);
   if (quantity === 0) {
     statements.deleteCartItem.run(auth.user.id, productId);
-  } else {
-    statements.upsertCartItem.run(auth.user.id, productId, quantity);
+    sendJson(request, response, 200, { ok: true });
+    return;
   }
 
-  sendJson(request, response, 200, { ok: true });
+  if (availableStock <= 0) {
+    sendJson(request, response, 409, { error: `${product.name} is out of stock.`, availableStock: 0 });
+    return;
+  }
+
+  if (quantity > availableStock) {
+    sendJson(request, response, 409, {
+      error: `Only ${availableStock} unit(s) left for ${product.name}.`,
+      availableStock
+    });
+    return;
+  }
+
+  statements.upsertCartItem.run(auth.user.id, productId, quantity);
+  sendJson(request, response, 200, { ok: true, availableStock });
 }
 
 async function handleSyncCart(request, response) {
@@ -786,7 +986,14 @@ async function handleSyncCart(request, response) {
       if (Number.isNaN(productId)) continue;
       const product = statements.getProductById.get(productId);
       if (!product) continue;
-      statements.upsertCartItem.run(auth.user.id, productId, quantity);
+
+      const availableStock = sanitizeStock(product.stock);
+      if (availableStock <= 0) {
+        statements.deleteCartItem.run(auth.user.id, productId);
+        continue;
+      }
+
+      statements.upsertCartItem.run(auth.user.id, productId, Math.min(quantity, availableStock));
     }
     db.exec("COMMIT");
     sendJson(request, response, 200, { ok: true });
@@ -831,16 +1038,31 @@ async function handleCheckout(request, response) {
     return;
   }
 
-  const snapshots = [];
-  let subtotal = 0;
-
+  const requestedItems = new Map();
   for (const item of items) {
     const productId = Number(item.id);
     const quantity = Math.max(1, Math.floor(Number(item.quantity || 1)));
-    if (Number.isNaN(productId)) continue;
+    if (Number.isNaN(productId) || quantity <= 0) continue;
+    requestedItems.set(productId, (requestedItems.get(productId) || 0) + quantity);
+  }
 
+  const snapshots = [];
+  const stockErrors = [];
+  let subtotal = 0;
+
+  for (const [productId, quantity] of requestedItems.entries()) {
     const product = statements.getProductById.get(productId);
     if (!product) continue;
+
+    const availableStock = sanitizeStock(product.stock);
+    if (availableStock <= 0) {
+      stockErrors.push(`${product.name} is out of stock.`);
+      continue;
+    }
+    if (quantity > availableStock) {
+      stockErrors.push(`${product.name} only has ${availableStock} unit(s) left.`);
+      continue;
+    }
 
     const snapshot = {
       ...serializeProduct(product),
@@ -855,10 +1077,22 @@ async function handleCheckout(request, response) {
     return;
   }
 
+  if (stockErrors.length) {
+    sendJson(request, response, 409, { error: stockErrors[0], details: stockErrors });
+    return;
+  }
+
   const total = subtotal + 200;
 
   db.exec("BEGIN TRANSACTION");
   try {
+    for (const snapshot of snapshots) {
+      const changed = statements.decrementProductStockIfEnough.run(snapshot.quantity, snapshot.id, snapshot.quantity).changes || 0;
+      if (changed !== 1) {
+        throw new Error(`Not enough stock for ${snapshot.name}.`);
+      }
+    }
+
     statements.createOrder.run(auth.user.id, JSON.stringify(snapshots), total, "placed", paymentMethod, address, contactDigits);
     if (!payload.isBuyNow) {
       statements.clearCart.run(auth.user.id);
@@ -867,6 +1101,10 @@ async function handleCheckout(request, response) {
     sendJson(request, response, 201, { ok: true });
   } catch (error) {
     db.exec("ROLLBACK");
+    if (String(error?.message || "").startsWith("Not enough stock")) {
+      sendJson(request, response, 409, { error: error.message });
+      return;
+    }
     sendJson(request, response, 500, { error: "Checkout failed." });
   }
 }
@@ -905,8 +1143,16 @@ async function handleCancelOrder(request, response) {
     return;
   }
 
-  statements.updateOrderStatus.run("cancelled", orderId);
-  sendJson(request, response, 200, { ok: true });
+  db.exec("BEGIN TRANSACTION");
+  try {
+    statements.updateOrderStatus.run("cancelled", orderId);
+    restockOrderItems(order.items_json);
+    db.exec("COMMIT");
+    sendJson(request, response, 200, { ok: true });
+  } catch (error) {
+    db.exec("ROLLBACK");
+    sendJson(request, response, 500, { error: "Unable to cancel order right now." });
+  }
 }
 
 function handleGetAdminOrders(request, response) {
@@ -930,13 +1176,30 @@ async function handleUpdateAdminOrderStatus(request, response) {
     return;
   }
 
-  if (!statements.findOrderById.get(orderId)) {
+  const existing = statements.getOrderById.get(orderId);
+  if (!existing) {
     sendJson(request, response, 404, { error: "Order not found." });
     return;
   }
 
-  statements.updateOrderStatus.run(status, orderId);
-  sendJson(request, response, 200, { ok: true });
+  const currentStatus = normalizeOrderStatus(existing.status);
+  if (currentStatus === "cancelled" && status !== "cancelled") {
+    sendJson(request, response, 409, { error: "Cancelled orders cannot be reopened." });
+    return;
+  }
+
+  db.exec("BEGIN TRANSACTION");
+  try {
+    statements.updateOrderStatus.run(status, orderId);
+    if (status === "cancelled" && currentStatus !== "cancelled") {
+      restockOrderItems(existing.items_json);
+    }
+    db.exec("COMMIT");
+    sendJson(request, response, 200, { ok: true });
+  } catch (error) {
+    db.exec("ROLLBACK");
+    sendJson(request, response, 500, { error: "Unable to update order status." });
+  }
 }
 
 async function handleCreateAdminProduct(request, response) {
@@ -948,6 +1211,7 @@ async function handleCreateAdminProduct(request, response) {
   const category = String(payload.category || "").trim();
   const tier = String(payload.tier || "mid").trim().toLowerCase();
   const price = Math.floor(Number(payload.price || 0));
+  const stock = Math.floor(Number(payload.stock ?? 20));
   const badge = String(payload.badge || "").trim();
   const accent = String(payload.accent || "cyan").trim().toLowerCase();
   const desc = String(payload.desc || payload.description || "").trim();
@@ -964,6 +1228,10 @@ async function handleCreateAdminProduct(request, response) {
     sendJson(request, response, 400, { error: "Price must be greater than zero." });
     return;
   }
+  if (!Number.isFinite(stock) || stock < 0) {
+    sendJson(request, response, 400, { error: "Stock must be zero or greater." });
+    return;
+  }
 
   let imageUrl = "";
   try {
@@ -973,9 +1241,59 @@ async function handleCreateAdminProduct(request, response) {
     return;
   }
 
-  const result = statements.insertProduct.run(name, category, tier, price, badge, accent, desc, imageUrl || null);
+  const result = statements.insertProduct.run(name, category, tier, price, stock, badge, accent, desc, imageUrl || null);
   const product = statements.getProductById.get(result.lastInsertRowid);
   sendJson(request, response, 201, { product: serializeProduct(product) });
+}
+
+async function handleUpdateAdminProductStock(request, response) {
+  const auth = requireAdmin(request, response);
+  if (!auth) return;
+
+  const payload = await readJsonBody(request);
+  const productId = Number(payload.productId);
+  const hasStockValue = payload.stock !== undefined && payload.stock !== null && String(payload.stock).trim() !== "";
+  const hasAddStock = payload.addStock !== undefined && payload.addStock !== null && String(payload.addStock).trim() !== "";
+
+  if (Number.isNaN(productId)) {
+    sendJson(request, response, 400, { error: "Invalid product." });
+    return;
+  }
+  if (hasStockValue && hasAddStock) {
+    sendJson(request, response, 400, { error: "Provide either stock or addStock, not both." });
+    return;
+  }
+  if (!hasStockValue && !hasAddStock) {
+    sendJson(request, response, 400, { error: "Stock value is required." });
+    return;
+  }
+
+  const product = statements.getProductById.get(productId);
+  if (!product) {
+    sendJson(request, response, 404, { error: "Product not found." });
+    return;
+  }
+
+  let nextStock = sanitizeStock(product.stock);
+  if (hasStockValue) {
+    const stock = Math.floor(Number(payload.stock));
+    if (!Number.isFinite(stock) || stock < 0) {
+      sendJson(request, response, 400, { error: "Stock must be zero or greater." });
+      return;
+    }
+    nextStock = stock;
+  } else {
+    const addStock = Math.floor(Number(payload.addStock));
+    if (!Number.isFinite(addStock) || addStock === 0) {
+      sendJson(request, response, 400, { error: "addStock must be a non-zero integer." });
+      return;
+    }
+    nextStock = Math.max(0, nextStock + addStock);
+  }
+
+  statements.updateProductStock.run(nextStock, productId);
+  const updated = statements.getProductById.get(productId);
+  sendJson(request, response, 200, { product: serializeProduct(updated) });
 }
 
 const server = http.createServer(async (request, response) => {
@@ -1003,6 +1321,14 @@ const server = http.createServer(async (request, response) => {
     }
     if (pathname === "/api/auth/login" && request.method === "POST") {
       await handleLogin(request, response);
+      return;
+    }
+    if (pathname === "/api/auth/forgot-password" && request.method === "POST") {
+      await handleForgotPassword(request, response);
+      return;
+    }
+    if (pathname === "/api/auth/reset-password" && request.method === "POST") {
+      await handleResetPassword(request, response);
       return;
     }
     if (pathname === "/api/auth/me" && request.method === "GET") {
@@ -1069,6 +1395,10 @@ const server = http.createServer(async (request, response) => {
     }
     if (pathname === "/api/admin/products" && request.method === "POST") {
       await handleCreateAdminProduct(request, response);
+      return;
+    }
+    if (pathname === "/api/admin/products/stock" && request.method === "POST") {
+      await handleUpdateAdminProductStock(request, response);
       return;
     }
 

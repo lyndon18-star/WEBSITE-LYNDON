@@ -14,6 +14,15 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Password Reset Tokens: temporary tokens for forgot-password flow
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  token TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  expires_at INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Sessions Table: Stores active login tokens
 CREATE TABLE IF NOT EXISTS sessions (
   token TEXT PRIMARY KEY,
@@ -30,6 +39,7 @@ CREATE TABLE IF NOT EXISTS products (
   category TEXT NOT NULL,
   tier TEXT NOT NULL,
   price INTEGER NOT NULL,
+  stock INTEGER NOT NULL DEFAULT 20,
   badge TEXT,
   accent TEXT,
   description TEXT,
@@ -63,6 +73,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 -- Indexing for performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user ON password_reset_tokens(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_cart_user ON cart_items(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id);

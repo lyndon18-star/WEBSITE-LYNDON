@@ -41,7 +41,7 @@
         <article class="panel page-hero-main">
           <p class="section-label">Seller Workspace</p>
           <h1>Add Products</h1>
-          <p class="page-copy-tight">Upload new products in a dedicated seller page without mixing them into customer order management.</p>
+          <p class="page-copy-tight">Upload new products and manage inventory stock levels without mixing them into customer order management.</p>
           <div class="hero-actions compact-actions">
             <a class="btn btn-primary" href="admin.html">View Customer Orders</a>
             <a class="btn btn-secondary" href="shop.html">Open Shop</a>
@@ -101,6 +101,12 @@
                 <span>Price</span>
                 <input id="adminProductPrice" type="number" min="1" placeholder="0" required>
               </label>
+              <label class="form-field">
+                <span>Stock</span>
+                <input id="adminProductStock" type="number" min="0" step="1" value="20" required>
+              </label>
+            </div>
+            <div class="admin-form-grid">
               <label class="form-field">
                 <span>Badge</span>
                 <input id="adminProductBadge" type="text" placeholder="Flagship, 1440p Ultra...">

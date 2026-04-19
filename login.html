@@ -71,6 +71,30 @@
           <button type="submit">Login</button>
         </form>
 
+        <section id="forgotPasswordPanel" class="auth-reset-panel">
+          <p class="section-label">Password Recovery</p>
+          <h3>Forgot password?</h3>
+          <p class="page-copy-tight">Enter your account email and choose a new password.</p>
+
+          <form onsubmit="event.preventDefault(); resetPassword();">
+            <label class="form-field">
+              <span>Account Email</span>
+              <input id="forgotEmail" placeholder="you@example.com" type="email" required>
+            </label>
+            <label class="form-field">
+              <span>New Password</span>
+              <input id="forgotNewPass" placeholder="Enter new password" type="password" required>
+            </label>
+            <label class="form-field">
+              <span>Confirm New Password</span>
+              <input id="forgotConfirmPass" placeholder="Repeat new password" type="password" required>
+            </label>
+            <button type="submit">Reset Password</button>
+          </form>
+
+          <p id="forgotFeedback" class="auth-feedback"></p>
+        </section>
+
         <div class="auth-footer">
           Need an account? <a href="register.html">Register here</a>
         </div>
