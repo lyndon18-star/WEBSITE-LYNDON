@@ -39,6 +39,7 @@ const scrollRevealSelector = [
 
 const THEME_STORAGE_KEY = "labu_theme";
 const ADMIN_STOCK_OVERRIDES_KEY = "labu_admin_stock_overrides";
+const MOBILE_NAV_MEDIA_QUERY = "(max-width: 900px)";
 let adminStockOverrides = new Map();
 
 function normalizeTheme(value) {
@@ -1204,6 +1205,97 @@ function renderPrimaryNavs() {
       .map((item) => `<a class="${item.key === activeKey ? "active" : ""}" href="${item.href}">${item.label}</a>`)
       .join("");
   });
+
+  closeForgeMobileNav();
+}
+
+function setMobileNavExpandedState(toggle, expanded) {
+  if (!toggle) return;
+  toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+  toggle.setAttribute("aria-label", expanded ? "Close navigation menu" : "Open navigation menu");
+}
+
+function closeForgeMobileNav() {
+  if (!document.body) return;
+  document.body.classList.remove("forge-mobile-nav-open");
+  setMobileNavExpandedState(document.querySelector(".forge-mobile-nav-toggle"), false);
+}
+
+function initForgeMobileNav() {
+  if (window._forgeMobileNavReady) return;
+  if (!document.body) return;
+
+  const topbar = document.querySelector(".forge-home-topbar");
+  const nav = topbar?.querySelector(".forge-home-nav");
+  if (!topbar || !nav) return;
+
+  if (!nav.id) {
+    nav.id = "forgePrimaryNav";
+  }
+
+  let toggle = topbar.querySelector(".forge-mobile-nav-toggle");
+  if (!toggle) {
+    toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "forge-mobile-nav-toggle";
+    toggle.innerHTML = '<span class="forge-mobile-nav-toggle-label">Menu</span><span class="forge-mobile-nav-toggle-bars" aria-hidden="true"></span>';
+    topbar.insertBefore(toggle, nav);
+  }
+
+  toggle.setAttribute("aria-controls", nav.id);
+  setMobileNavExpandedState(toggle, false);
+
+  const mobileMedia = typeof window.matchMedia === "function" ? window.matchMedia(MOBILE_NAV_MEDIA_QUERY) : null;
+  const isMobileViewport = () => {
+    if (mobileMedia) return mobileMedia.matches;
+    return window.innerWidth <= 900;
+  };
+
+  const toggleMobileNav = () => {
+    if (!isMobileViewport()) return;
+    const willOpen = !document.body.classList.contains("forge-mobile-nav-open");
+    document.body.classList.toggle("forge-mobile-nav-open", willOpen);
+    setMobileNavExpandedState(toggle, willOpen);
+  };
+
+  toggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleMobileNav();
+  });
+
+  nav.addEventListener("click", (event) => {
+    if (!event.target.closest("a[href]")) return;
+    closeForgeMobileNav();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("forge-mobile-nav-open")) return;
+    if (topbar.contains(event.target)) return;
+    closeForgeMobileNav();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    closeForgeMobileNav();
+  });
+
+  const handleViewportChange = () => {
+    if (isMobileViewport()) return;
+    closeForgeMobileNav();
+  };
+
+  if (mobileMedia) {
+    if (typeof mobileMedia.addEventListener === "function") {
+      mobileMedia.addEventListener("change", handleViewportChange);
+    } else if (typeof mobileMedia.addListener === "function") {
+      mobileMedia.addListener(handleViewportChange);
+    }
+  } else {
+    window.addEventListener("resize", handleViewportChange);
+  }
+
+  window._forgeMobileNavReady = true;
 }
 
 function syncLandingHomeState() {
@@ -3405,6 +3497,7 @@ async function loadStorefront() {
 document.addEventListener("DOMContentLoaded", async () => {
   initAuthGateLinks();
   initPageTransitions();
+  initForgeMobileNav();
   initBackgroundParticles();
   initPromoCarousels();
   initScrollReveals();
@@ -3435,6 +3528,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 window.addEventListener("hashchange", () => {
   renderPrimaryNavs();
+  closeForgeMobileNav();
 });
 
 function extractPageFromHref(href) {

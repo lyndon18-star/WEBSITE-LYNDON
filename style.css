@@ -3726,6 +3726,61 @@ body.landing-body {
   transform: translateY(-1px);
 }
 
+.forge-mobile-nav-toggle {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  justify-self: end;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eef4ff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.forge-mobile-nav-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(33, 212, 253, 0.5);
+  background: rgba(33, 212, 253, 0.14);
+  color: var(--accent);
+}
+
+.forge-mobile-nav-toggle-bars {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.forge-mobile-nav-toggle-bars::before,
+.forge-mobile-nav-toggle-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.forge-mobile-nav-toggle-bars::before {
+  transform: translateY(-5px);
+}
+
+.forge-mobile-nav-toggle-bars::after {
+  transform: translateY(5px);
+}
+
 .forge-home-tools {
   min-width: 0;
   display: flex;
@@ -4448,6 +4503,159 @@ body.account-menu-open .forge-home-topbar {
 /* RAM */
 .forge-card-ram {
   background-position: right center;
+}
+
+@media (max-width: 900px) {
+  .forge-home-topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand toggle"
+      "tools tools";
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .forge-home-brand {
+    grid-area: brand;
+  }
+
+  .forge-mobile-nav-toggle {
+    display: inline-flex;
+    grid-area: toggle;
+  }
+
+  .forge-home-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-6px);
+    pointer-events: none;
+    padding: 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(8, 12, 20, 0.9);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: max-height 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  body.forge-mobile-nav-open .forge-home-nav {
+    max-height: 320px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    padding: 8px;
+  }
+
+  .forge-home-nav a {
+    display: block;
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .forge-home-nav a.active,
+  .forge-home-nav a:hover {
+    transform: none;
+    text-decoration: none;
+    border-color: rgba(33, 212, 253, 0.38);
+    background: rgba(33, 212, 253, 0.14);
+  }
+
+  body.forge-mobile-nav-open .forge-mobile-nav-toggle-bars {
+    background: transparent;
+  }
+
+  body.forge-mobile-nav-open .forge-mobile-nav-toggle-bars::before {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  body.forge-mobile-nav-open .forge-mobile-nav-toggle-bars::after {
+    transform: translateY(0) rotate(-45deg);
+  }
+
+  .forge-home-tools {
+    grid-area: tools;
+    max-width: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .forge-home-search {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 12px;
+  }
+
+  .forge-home-search input {
+    font-size: 0.74rem;
+  }
+
+  .forge-home-icons {
+    gap: 6px;
+  }
+
+  .forge-home-topbar::before {
+    opacity: 0.62;
+    background:
+      radial-gradient(560px 160px at 0% 15%, rgba(33, 212, 253, 0.2), transparent 62%),
+      radial-gradient(560px 160px at 100% 20%, rgba(133, 104, 255, 0.18), transparent 64%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 50%);
+  }
+
+  .forge-home-topbar::after {
+    opacity: 0.18;
+  }
+}
+
+@media (max-width: 640px) {
+  .forge-home-topbar {
+    padding: 8px 10px;
+  }
+
+  .forge-home-tools {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+
+  .forge-home-search {
+    padding: 7px 10px;
+  }
+
+  .forge-home-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .forge-home-search svg,
+  .forge-home-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .forge-mobile-nav-toggle {
+    padding: 7px 9px;
+    gap: 8px;
+    font-size: 0.64rem;
+  }
+
+  .forge-mobile-nav-toggle-label {
+    display: none;
+  }
 }
 
 /* =============================================
@@ -6177,6 +6385,130 @@ body.account-menu-open .forge-home-topbar {
   }
 }
 
+@media (max-width: 900px) {
+  .forge-form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .cart-wrap {
+    width: calc(100% - 20px);
+    margin: 20px auto 158px;
+  }
+
+  .cart-item-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .cart-item-details {
+    min-width: 0;
+  }
+
+  .cart-item-details h4 {
+    margin: 0 0 4px;
+  }
+
+  .checkout-note-col {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .cart-bar-inner {
+    max-width: 100%;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 720px) {
+  .forge-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item-media,
+  .large-media {
+    width: 72px;
+    height: 72px;
+  }
+
+  .cart-qty-controls {
+    margin-top: 8px;
+  }
+
+  .cart-bottom-bar {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
+  .cart-bar-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .cart-bar-left,
+  .cart-bar-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cart-total-box {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cart-bar-right .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .summary-details {
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .center-col {
+    border: 0;
+    padding: 0;
+  }
+
+  .right-col {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .location-block {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .checkout-btn-bottom {
+    position: static;
+    width: 100%;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .cart-wrap {
+    width: calc(100% - 14px);
+    margin-bottom: 176px;
+  }
+
+  .cart-item-row {
+    padding: 12px;
+  }
+
+  .cart-coupons {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* =============================================
    LIGHT MODE OVERRIDES
    ============================================= */
@@ -6234,6 +6566,18 @@ body.account-menu-open .forge-home-topbar {
 
 :root[data-theme="light"] .forge-home-nav a {
   color: rgba(15, 23, 42, 0.68);
+}
+
+:root[data-theme="light"] .forge-mobile-nav-toggle {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.14);
+  color: rgba(15, 23, 42, 0.84);
+}
+
+:root[data-theme="light"] .forge-mobile-nav-toggle:hover {
+  background: rgba(33, 212, 253, 0.16);
+  border-color: rgba(33, 212, 253, 0.34);
+  color: rgba(15, 23, 42, 0.9);
 }
 
 :root[data-theme="light"] .forge-home-search {
