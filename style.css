@@ -187,6 +187,15 @@ input[type="password"]::-ms-clear {
   display: none;
 }
 
+/* Hide built-in mobile/WebKit adornments that can overlap custom password toggles. */
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-caps-lock-indicator {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .site-shell {
   width: min(var(--shell-max), calc(100% - var(--shell-gutter)));
   margin: 0 auto;
@@ -5188,6 +5197,8 @@ body.account-menu-open .forge-home-topbar {
   background: none;
   border: none;
   padding: 8px;
+  -webkit-appearance: none;
+  appearance: none;
   color: var(--muted);
   cursor: pointer;
   display: flex;
@@ -5195,6 +5206,10 @@ body.account-menu-open .forge-home-topbar {
   justify-content: center;
   transition: color 0.2s ease;
   z-index: 5;
+}
+
+.forge-eye-toggle::before {
+  display: none;
 }
 
 .forge-eye-toggle:hover {
@@ -5272,6 +5287,81 @@ body.account-menu-open .forge-home-topbar {
 
 .forge-btn-solid:hover { transform: translateY(-2px); }
 .forge-btn-outline:hover { background: rgba(255, 255, 255, 0.1); }
+
+@media (max-width: 640px) {
+  .forge-modal-backdrop {
+    align-items: flex-start;
+    padding: 10px;
+    overflow-y: auto;
+  }
+
+  .forge-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 20px);
+    border-radius: 20px;
+    overflow-y: auto;
+  }
+
+  .forge-modal-content {
+    padding: 30px 16px 18px;
+  }
+
+  .forge-modal h2 {
+    font-size: 1.35rem;
+    line-height: 1.15;
+    padding-right: 24px;
+  }
+
+  .forge-modal p {
+    margin-bottom: 20px;
+  }
+
+  .forge-modal-close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .forge-input-wrapper input {
+    padding-right: 52px;
+  }
+
+  .forge-eye-toggle {
+    right: 8px;
+    padding: 6px;
+  }
+
+  .forge-eye-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .auth-wrap,
+  .dashboard-wrap {
+    padding-bottom: 24px;
+  }
+
+  .auth-layout {
+    gap: 12px;
+    padding-top: 12px;
+  }
+
+  .auth-panel {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .auth-panel form {
+    margin-top: 16px;
+    gap: 12px;
+  }
+
+  .auth-reset-panel {
+    padding: 12px;
+  }
+}
 
 /* CART AND CHECKOUT CSS */
 
