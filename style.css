@@ -181,6 +181,12 @@ select {
   font: inherit;
 }
 
+/* Keep a single password toggle icon (hide native Edge/IE reveal controls). */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 .site-shell {
   width: min(var(--shell-max), calc(100% - var(--shell-gutter)));
   margin: 0 auto;
